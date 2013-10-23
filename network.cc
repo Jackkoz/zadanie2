@@ -12,6 +12,12 @@
  * -> wcięcia to (dla wygody) roboczo taby, natomiast przed oddaniem
  * 		pracy przekonwertujemy je na spacje
  * 
+ * 
+ * Nomenklatura na potrzeby określania złożoności:
+ * -> N - liczba sieci w pamięci
+ * -> n - liczba wierzchołków w danej sieci
+ * -> m - liczba krawędzi w danej sieci
+ * 
  */
 
 #include "network.h"
@@ -43,7 +49,7 @@ typedef map<unsigned long,NETWORK> NETWORK_CONTAINER;
 NETWORK_CONTAINER networks;
 /**********************************************************************/
 
-
+//Złożoność: O(1)
 unsigned long network_new(int growing)
 {
 	if (debug) cerr << "network_new(" << growing << "):" << endl;
@@ -60,7 +66,7 @@ unsigned long network_new(int growing)
 	return new_id;
 }
 
-
+//Złożoność: O(log N)
 void network_delete(unsigned long id)
 {
 	if (debug) cerr << "network_delete(" << id << "):" << endl;
@@ -93,4 +99,11 @@ size_t network_nodes_number(unsigned long id)
 	if (debug) cerr << "\tnetwork with given id consists of " << unique_keys << " nodes" << endl;
 	
 	return unique_keys;
+}
+
+//Ta funkcja u nas nic nie robi, bo wierzchołki trzymamy jako elementy
+//krawiędzi
+void network_add_node(unsigned long id, const char* label)
+{
+	return;
 }
