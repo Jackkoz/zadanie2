@@ -81,13 +81,13 @@ void network_delete(unsigned long id)
 	if (debug) cerr << "\t" << n << " elements habe been deleted" << endl;
 }
 
-
+//Złożoność: O(m + log N)
 size_t network_nodes_number(unsigned long id)
 {
 	if (debug) cerr << "network_nodes_number(" << id << "):" << endl;
 	
 	//Net - iterator na naszą sieć (typu NETWORK)
-	NETWORK_CONTAINER::iterator net = networks.find(id);
+	NETWORK_CONTAINER::iterator net = networks.find(id);		//O(log N)
 	
 	//Gdy nie znaleziono sieci o tym kluczu, to ze specyfikacji zwracamy 0
 	if (net == networks.end())
@@ -99,6 +99,7 @@ size_t network_nodes_number(unsigned long id)
 	NET_MAP::size_type unique_keys = 0;
 	
 	//Sklejam ze sobą pary o tych samych kluczach
+	//O(m)
 	for (NET_MAP::iterator it = net->second.first.begin(); it != net->second.first.end(); it = net->second.first.upper_bound(it->first)) ++unique_keys;
 	
 	if (debug) cerr << "\tnetwork with given id consists of " << unique_keys << " nodes" << endl;
