@@ -106,8 +106,7 @@ size_t network_nodes_number(unsigned long id)
 	return unique_keys;
 }
 
-//Ta funkcja u nas nic nie robi, bo wierzchołki trzymamy jako elementy
-//krawiędzi
+
 void network_add_node(unsigned long id, const char* label)
 {
 	if (debug) cerr << "network_add_node(" << id << ", " << label << "):" << endl;
