@@ -84,7 +84,7 @@ void network_delete(unsigned long id)
 }
 
 
-//Złożoność: O(m + log N)
+//Złożoność: O(n + log m + log N)
 size_t network_nodes_number(unsigned long id)
 {
 	if (debug) cerr << "network_nodes_number(" << id << "):" << endl;
@@ -102,7 +102,7 @@ size_t network_nodes_number(unsigned long id)
 	NET_MAP::size_type unique_keys = 0;
 	
 	//Sklejam ze sobą pary o tych samych kluczach
-	//O(m)
+	//O(n + log m)
 	for (NET_MAP::iterator it = net->second.first.begin(); it != net->second.first.end(); it = net->second.first.upper_bound(it->first)) ++unique_keys;
 	
 	if (debug) cerr << "\tnetwork with given id consists of " << unique_keys << " nodes" << endl;
@@ -115,6 +115,7 @@ size_t network_nodes_number(unsigned long id)
 void network_add_node(unsigned long id, const char* label)
 {
 	if (debug) cerr << "network_add_node(" << id << ", " << label << "):" << endl;
+	
 	//Gdy pusty napis, to nic nie robię
 	if (label == NULL) return;
 	
