@@ -4,6 +4,9 @@
  * -> id jest generowany w ten sposób, że gdy
  * 		nie ma w pamięci żadnej sieci, to id = 0, a w przeciwnym
  * 		razie nowe id = największe dotychczasowe id + 1
+ * -> informację o istnieniu wierzchołka przechowujemy jako
+ * 		pętlę od danego wierzchołka do niego samego (wartość bool
+ * 		jest w tym przypadku niezdefiniowana)
  * 
  * 
  * Konwencje formatowania kodu:
@@ -107,5 +110,29 @@ size_t network_nodes_number(unsigned long id)
 //krawiędzi
 void network_add_node(unsigned long id, const char* label)
 {
-	return;
+	if (debug) cerr << "network_add_node(" << id << ", " << label << "):" << endl;
+	//Gdy pusty napis, to nic nie robię
+	if (label == NULL) return;
+	
+	NETWORK_CONTAINER::iterator net = networks.find(id);
+	
+	//Gdy sieć nie istnieje, to nic nie robię
+	if (net == networks.end())
+	{
+		if (debug) cerr << "\tno network with given id found" << endl;
+		return;
+	}
+	
+	NET_MAP::iterator element = net->second.first.find(label);
+	
+	//Gdy element o etykiecie label istnieje, nic nie robię
+	if (element != net->second.first.end())
+	{
+		if (debug) cerr << "\tnode with given label already exists in given network" << endl;
+		return;
+	}
+	
+	//Dodaję element
+	net->second.first.insert(make_pair(label, make_pair(false, label)));
+	if (debug) cerr << "\tnode with given label has been added to given network" << endl;
 }
