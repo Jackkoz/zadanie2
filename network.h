@@ -1,3 +1,8 @@
+#ifndef _NETWORK_H
+#define _NETWORK_H
+
+#include <cstdio>
+
 //Tworzy nową, pustą, sieć i zwraca jej identyfikator.
 //Sieć pusta, to sieć z pustym zbiorem węzłów.
 //Parametr growing mówi o tym, czy nowa sieć ma być rosnąca (growing != 0) czy nie (growing == 0).
@@ -44,3 +49,5 @@ size_t network_out_degree(unsigned long id, const char* label);
 //Jeżeli istnieje sieć o identyfikatorze id, a w niej węzeł o etykiecie label,
 //to zwraca ilość krawędzi wchodzących do tego węzła, a w przeciwnym przypadku zwraca 0.
 size_t network_in_degree(unsigned long id, const char* label);
+
+#endif
