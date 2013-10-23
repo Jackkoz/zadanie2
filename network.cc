@@ -52,6 +52,7 @@ typedef map<unsigned long,NETWORK> NETWORK_CONTAINER;
 NETWORK_CONTAINER networks;
 /**********************************************************************/
 
+
 //Złożoność: O(1)
 unsigned long network_new(int growing)
 {
@@ -71,6 +72,7 @@ unsigned long network_new(int growing)
 	return new_id;
 }
 
+
 //Złożoność: O(log N)
 void network_delete(unsigned long id)
 {
@@ -80,6 +82,7 @@ void network_delete(unsigned long id)
 	
 	if (debug) cerr << "\t" << n << " elements habe been deleted" << endl;
 }
+
 
 //Złożoność: O(m + log N)
 size_t network_nodes_number(unsigned long id)
@@ -108,13 +111,14 @@ size_t network_nodes_number(unsigned long id)
 }
 
 
+//Złożoność: O(log N + log m)
 void network_add_node(unsigned long id, const char* label)
 {
 	if (debug) cerr << "network_add_node(" << id << ", " << label << "):" << endl;
 	//Gdy pusty napis, to nic nie robię
 	if (label == NULL) return;
 	
-	NETWORK_CONTAINER::iterator net = networks.find(id);
+	NETWORK_CONTAINER::iterator net = networks.find(id);		//O(log N)
 	
 	//Gdy sieć nie istnieje, to nic nie robię
 	if (net == networks.end())
@@ -123,7 +127,7 @@ void network_add_node(unsigned long id, const char* label)
 		return;
 	}
 	
-	NET_MAP::iterator element = net->second.first.find(label);
+	NET_MAP::iterator element = net->second.first.find(label);	//O(log m)
 	
 	//Gdy element o etykiecie label istnieje, nic nie robię
 	if (element != net->second.first.end())
