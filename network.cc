@@ -57,7 +57,9 @@ unsigned long network_new(int growing)
 	unsigned long new_id = -1;
 	
 	if (networks.size() == 0) new_id = 0;
-	else new_id = networks.size();
+	
+	//Biorę ostatni element i do jego klucza dodaję 1
+	else new_id = networks.rbegin()->first + 1;
 	
 	if (debug) cerr << "\tnetworks.size() == " << networks.size() << ", new_id = " << new_id << endl;
 	
