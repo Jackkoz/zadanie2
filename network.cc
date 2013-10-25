@@ -335,3 +335,57 @@ void network_add_link(unsigned long id, const char* slabel, const char* tlabel)
 		net->second.first.insert(make_pair(tlabel, make_pair(false, slabel) ) );
 	}
 }
+
+void network_remove_node(unsigned long id, const char* label)
+{
+	if (debug)
+	{
+		cerr << "network_remove_node(" << id << ", " << label << "):\n";
+	}
+
+	if (label == NULL)
+	{
+		if (debug)
+		{
+			cerr << "Label is null. Aborting.\n";
+		}
+		return;
+	}
+
+	NETWORK_CONTAINER::iterator net = networks.find(id);		//O(log N)
+
+	//If no network with given id exists - do nothing
+	if (net == networks.end())
+	{
+		if (debug)
+		{
+			cerr << "No network with given id found. Aborting.\n";
+		}
+		return;
+	}	
+
+	pair <NET_MAP::iterator, NET_MAP::iterator> searchRange;
+	searchRange = net->second.first.equal_range(slabel);  //O(log N)
+	NET_MAP::iterator it = searchRange.first;	
+
+	if (it->second.second != label)
+	{
+		if (debug)
+		{
+			cerr << "The node does not exist in given network. Aborting.\n";
+		}
+		return;
+	}
+
+	if (debug)
+		{
+			cerr << "Removed node " << label << " and all associated links.\n";
+		}
+
+	for (it; it != searchRange.second; it++)
+	{
+		//Poniższe nie zadziała tak, jak chciałbym
+		net->second.first.erease(net->second.first.find(make_pair(it->second.second, make_pair(!it->second.first, it->first) ) ) ); 
+		net->second.first.erase(it);
+	}
+}
