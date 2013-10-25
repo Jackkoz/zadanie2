@@ -161,7 +161,14 @@ void network_add_node(unsigned long id, const char* label)
     if (debug) cerr << "network_add_node(" << id << ", " << label << "):" << endl;
     
     //Gdy pusty napis, to nic nie robię
-    if (label == NULL) return;
+    if (label == NULL)
+    {
+    	if (debug)
+    	{
+    		cerr << "No node with given label. Aborting.\n";
+    	}
+    	return;
+    }
     
     NET_CON::iterator net = networks.find(id);      //O(log N)
     
