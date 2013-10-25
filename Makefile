@@ -13,7 +13,7 @@ else
 	CPPFLAGS = $(DEBUG_CPPFLAGS)
 endif
 
-all: network.o growingnet.o
+all: clean network.o growingnet.o
 
 %.o: %.cc %.h
 	$(CPP) $(CPPFLAGS) -c $(LDFLAGS) $< -o $@
