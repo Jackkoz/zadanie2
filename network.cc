@@ -51,6 +51,7 @@ NET_CON networks;
 
 
 /*** DEKLARACJE FUNKCJI POMOCNICZYCH **********************************/
+inline bool exists(const NET_CON& networks, const unsigned long id);
 inline bool is_growing(const NET_CON::iterator& net);
 inline bool contains_node(const NET_DATA& net_data, const char* label);
 inline bool contains_link(const NET_DATA& net_data, const char* slabel, const char* tlabel);
@@ -58,6 +59,13 @@ inline bool contains_link(const NET_DATA& net_data, const char* slabel, const ch
 
 
 /*** IMPLEMENTACJE FUNKCJI POMOCNICZYCH *******************************/
+inline bool exists(const NET_CON& networks, const unsigned long id)
+{
+    NET_CON::const_iterator net = networks.find(id);
+    return net != networks.end();
+}
+
+
 inline bool is_growing(const NET_CON::iterator& net)
 {   
     return net->second.second;
@@ -331,4 +339,28 @@ void network_remove_node(unsigned long id, const char* label)
     }
     
     net->second.first.erase(net->second.first.find(label));
+}
+
+
+size_t network_links_number(unsigned long id)
+{
+    if (debug) cerr << "network_links_number(" << id << "):" << endl;
+    if (!exists(networks, id))
+    {
+        if (debug) cerr << "\tNo network with given id found. Returning 0.\n";
+        return 0;
+    }
+    
+    NET_CON::iterator net = networks.find(id);
+    
+    size_t links_count = 0;
+    
+    NET_DATA::const_iterator node = net->second.first.begin();
+    
+    while (node != net->second.first.end())
+    {
+        links_count += node->second.first.size();
+    }
+    
+    return links_count;
 }
