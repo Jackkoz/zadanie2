@@ -306,7 +306,7 @@ void network_add_link(unsigned long id, const char* slabel, const char* tlabel)
 	if (!exists)
 	{
 		//Adding the first node if it does not exist
-		if (searchRange.first->first != slabel) 
+		if (searchRange.first == searchRange.second) 
 		{
 			if (debug)
 			{
@@ -330,6 +330,7 @@ void network_add_link(unsigned long id, const char* slabel, const char* tlabel)
 		{
 			cerr << "Added link from node" << slabel << " to node " << tlabel <<".\n";
 		}
+		
 		net->second.first.insert(make_pair(slabel, make_pair(true, tlabel) ) );
 		net->second.first.insert(make_pair(tlabel, make_pair(false, slabel) ) );
 	}
