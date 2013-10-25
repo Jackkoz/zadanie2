@@ -4,7 +4,7 @@ DEBUG_CPPFLAGS = -Wall -Wextra -ansi -pedantic -g -DDEBUG_LEVEL=$(debuglevel)
 LDFLAGS = 
 
 ifeq ($(debuglevel),)
-	debuglevel = 0
+	debuglevel = 1
 endif
 
 ifeq ($(debuglevel),0)
@@ -16,7 +16,7 @@ endif
 all: network.o growingnet.o
 
 %.o: %.cc %.h
-	$(CPP) $(CPPFLAGS) $(LDFLAGS) $< -o $@
+	$(CPP) $(CPPFLAGS) -c $(LDFLAGS) $< -o $@
 
 clean:
 	rm -f *.o
