@@ -117,6 +117,17 @@ unsigned long network_new(int growing)
 void network_delete(unsigned long id)
 {
     if (debug) cerr << "network_delete(" << id << "):" << endl;
+
+    NET_CON::iterator net = networks.find(id);      //O(log N)
+
+    if (net == networks.end())
+    {
+    	if (debug)
+    	{
+    		cerr << "No network with given id. Aborting.\n";
+    	}
+    	return;
+    }
     
     int n = networks.erase(id);
     
@@ -150,7 +161,14 @@ void network_add_node(unsigned long id, const char* label)
     if (debug) cerr << "network_add_node(" << id << ", " << label << "):" << endl;
     
     //Gdy pusty napis, to nic nie robię
-    if (label == NULL) return;
+    if (label == NULL)
+    {
+    	if (debug)
+    	{
+    		cerr << "No node with given label. Aborting.\n";
+    	}
+    	return;
+    }
     
     NET_CON::iterator net = networks.find(id);      //O(log N)
     
@@ -398,6 +416,8 @@ size_t network_links_number(unsigned long id)
     {
         links_count += (*node++).second.first.size();
     }
+    
+    if (debug) cerr << "\tGiven network has " << links_count << " links" << endl;
     
     return links_count;
 }
