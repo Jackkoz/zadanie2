@@ -342,6 +342,43 @@ void network_remove_node(unsigned long id, const char* label)
 }
 
 
+void network_remove_link(unsigned long id, const char* slabel, const char* tlabel)
+{
+    if (debug) cerr << "network_remove_link(" << id << ", " << slabel << ", " << tlabel << "):" << endl;
+    if (!exists(networks, id))
+    {
+        if (debug) cerr << "\tNo network with given id found. Returning 0.\n";
+        return;
+    }
+    
+    NET_CON::iterator net = networks.find(id);
+    
+    if (!contains_node(net->second.first, slabel))
+    {
+        if (debug) cerr << "\tSource node does not exist, returning." << endl;
+        return;
+    }
+    if (!contains_node(net->second.first, tlabel))
+    {
+        if (debug) cerr << "\tTarget node does not exist, returning." << endl;
+        return;
+    }
+    if (!contains_link(net->second.first, slabel, tlabel))
+    {
+        if (debug) cerr << "\tNo such link in network, returning." << endl;
+        return;
+    }
+    
+    NET_DATA::iterator snode = net->second.first.find(slabel);
+    NET_DATA::iterator tnode = net->second.first.find(tlabel);
+    assert(snode != net->second.first.end() && tnode != net->second.first.end());
+    
+    snode->second.second.erase(tlabel);
+    tnode->second.first.erase(slabel);
+    if (debug) cerr << "\tLink erased." << endl;
+}
+
+
 size_t network_links_number(unsigned long id)
 {
     if (debug) cerr << "network_links_number(" << id << "):" << endl;
