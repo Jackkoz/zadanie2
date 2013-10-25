@@ -77,7 +77,15 @@ inline bool contains_link(const NET_DATA& net_data, const char* slabel, const ch
 }
 /**********************************************************************/
 
-//Złożoność: O(1)
+/*
+ * Tworzy nową, pustą, sieć i zwraca jej identyfikator.
+ * Sieć pusta, to sieć z pustym zbiorem węzłów.
+ * Parametr growing mówi o tym, czy nowa sieć
+ * ma być rosnąca (growing != 0) czy nie (growing == 0).
+ * 
+ * Złożoność obliczeniowa O(1)
+ * 
+ */
 unsigned long network_new(int growing)
 {
     if (debug) cerr << "network_new(" << growing << "):" << endl;
