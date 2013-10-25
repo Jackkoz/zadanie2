@@ -16,7 +16,7 @@ endif
 all: network.o growingnet.o
 
 %.o: %.cc %.h
-	$(CPP) $(CPPFLAGS) $(LDFLAGS) $< -o $@
+	$(CPP) $(CPPFLAGS) -c $(LDFLAGS) $< -o $@
 
 clean:
 	rm -f *.o
