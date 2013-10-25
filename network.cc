@@ -399,5 +399,7 @@ size_t network_links_number(unsigned long id)
         links_count += (*node++).second.first.size();
     }
     
+    if (debug) cerr << "\tGiven network has " << links_count << " links" << endl;
+    
     return links_count;
 }
