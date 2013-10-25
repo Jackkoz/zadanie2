@@ -396,7 +396,7 @@ size_t network_links_number(unsigned long id)
     
     while (node != net->second.first.end())
     {
-        links_count += node->second.first.size();
+        links_count += (*node++).second.first.size();
     }
     
     return links_count;
