@@ -1,4 +1,4 @@
-#include "growingnet.h"
+//#include "growingnet.h"
 #include "network.h"
 
 #include <stdio.h>
