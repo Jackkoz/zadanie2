@@ -36,7 +36,6 @@ using namespace std;
 const int debug = DEBUG_LEVEL;
 
 /*** DEKLARACJE TYPÓW *************************************************/
-enum NET_TYPE { NT_NOTGROWING = 0, NT_GROWING = 1 };
 typedef string NODE;
 //First set holds incoming edges, second set holds outgoing edges
 typedef pair<set<NODE>,set<NODE> > NODE_VAL;
