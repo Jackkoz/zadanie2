@@ -1,5 +1,5 @@
 CPP = g++
-OPT_CPPFLAGS = -Wall -ansi -pedantic -c -DDEBUG_LEVEL=$(debuglevel) -O2
+OPT_CPPFLAGS = -Wall -ansi -pedantic -c -DDEBUG_LEVEL=$(debuglevel) -DNDEBUG -O2
 DEBUG_CPPFLAGS = -Wall -Wextra -ansi -pedantic -c -g -DDEBUG_LEVEL=$(debuglevel)
 LDFLAGS = 
 
