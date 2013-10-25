@@ -117,6 +117,17 @@ unsigned long network_new(int growing)
 void network_delete(unsigned long id)
 {
     if (debug) cerr << "network_delete(" << id << "):" << endl;
+
+    NET_CON::iterator net = networks.find(id);      //O(log N)
+
+    if (net == networks.end())
+    {
+    	if (debug)
+    	{
+    		cerr << "No network with given id. Aborting.\n";
+    	}
+    	return;
+    }
     
     int n = networks.erase(id);
     
