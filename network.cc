@@ -28,6 +28,7 @@
 #include <vector>
 #include <map>
 #include <iostream>
+#include <cassert>
 using namespace std;
 
 #ifndef DEBUG_LEVEL
@@ -48,10 +49,35 @@ typedef pair<NET_MAP,bool> NETWORK;
 typedef map<unsigned long,NETWORK> NETWORK_CONTAINER;
 /**********************************************************************/
 
+
 /*** DEKLARACJE ZMIENNYCH GLOBALNYCH **********************************/
 NETWORK_CONTAINER networks;
 /**********************************************************************/
 
+
+/*** DEKLARACJE FUNKCJI POMOCNICZYCH **********************************/
+inline bool is_growing(const NETWORK_CONTAINER::iterator& net);
+inline NETWORK get_network(const NETWORK_CONTAINER::iterator& net);
+inline NET_MAP get_netmap(const NETWORK_CONTAINER::iterator& net);
+/**********************************************************************/
+
+
+/*** IMPLEMENTACJE FUNKCJI POMOCNICZYCH *******************************/
+inline bool is_growing(const NETWORK_CONTAINER::iterator& net)
+{	
+	return net->second.second;
+}
+
+inline NETWORK get_network(const NETWORK_CONTAINER::iterator& net)
+{
+	return net->second;
+}
+
+inline NET_MAP get_netmap(const NETWORK_CONTAINER::iterator& net)
+{
+	return net->second.first;
+}
+/**********************************************************************/
 
 //Złożoność: O(1)
 unsigned long network_new(int growing)
@@ -140,4 +166,94 @@ void network_add_node(unsigned long id, const char* label)
 	//Dodaję element
 	net->second.first.insert(make_pair(label, make_pair(false, label)));
 	if (debug) cerr << "\tnode with given label has been added to given network" << endl;
+}
+
+
+void network_clear(unsigned long id)
+{
+	if (debug) cerr << "network_clear(" << id << "):" << endl;
+	
+	//Net - iterator na naszą sieć (typu NETWORK)
+	NETWORK_CONTAINER::iterator net = networks.find(id);		//O(log N)
+	
+	//Gdy nie znaleziono sieci o tym kluczu, to nic nie robimy
+	if (net == networks.end())
+	{
+		if (debug) cerr << "\tno network with given id found, returning" << endl;
+		return;
+	}
+	
+	//Gdy sieć jest rosnąca, nic nie robimy
+	if (is_growing(net))
+	{
+		if (debug) cerr << "\tgrowing network, can't clear, returning" << endl;
+		return;
+	}
+		
+	net->second.first.clear();
+	if (debug) cerr << "\tnetwork has been cleared" << endl;
+}
+
+
+size_t network_out_degree(unsigned long id, const char* label)
+{
+	if (debug) cerr << "network_out_degree(" << id << "):" << endl;
+	
+	//Net - iterator na naszą sieć (typu NETWORK)
+	NETWORK_CONTAINER::iterator net = networks.find(id);		//O(log N)
+	
+	//Gdy nie znaleziono sieci o tym kluczu, zwracamy 0
+	if (net == networks.end())
+	{
+		if (debug) cerr << "\tno network with given id found, returning" << endl;
+		return 0;
+	}
+	
+	NET_MAP::iterator edge = net->second.first.lower_bound(label);
+	NET_MAP::iterator end_edge = net->second.first.upper_bound(label);
+	
+	size_t edges_count = 0;
+	
+	while (edge != end_edge)
+	{
+		// Gdy krawędź wychodząca, to zwiększam licznik
+		if (edge->second.first) ++edges_count;
+		++edge;
+	}
+	
+	if (debug) cerr << "\t" << edges_count << " outgoing edges have been found" << endl;
+	
+	return edges_count;
+}
+
+
+size_t network_in_degree(unsigned long id, const char* label)
+{
+	if (debug) cerr << "network_in_degree(" << id << "):" << endl;
+	
+	//Net - iterator na naszą sieć (typu NETWORK)
+	NETWORK_CONTAINER::iterator net = networks.find(id);		//O(log N)
+	
+	//Gdy nie znaleziono sieci o tym kluczu, zwracamy 0
+	if (net == networks.end())
+	{
+		if (debug) cerr << "\tno network with given id found, returning" << endl;
+		return 0;
+	}
+	
+	NET_MAP::iterator edge = net->second.first.lower_bound(label);
+	NET_MAP::iterator end_edge = net->second.first.upper_bound(label);
+	
+	size_t edges_count = 0;
+	
+	while (edge != end_edge)
+	{
+		// Gdy krawędź wchodząca, to zwiększam licznik
+		if (!edge->second.first) ++edges_count;
+		++edge;
+	}
+	
+	if (debug) cerr << "\t" << edges_count << " incoming edges have been found" << endl;
+	
+	return edges_count;
 }
