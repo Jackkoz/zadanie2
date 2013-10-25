@@ -189,7 +189,7 @@ void network_clear(unsigned long id)
 
 size_t network_out_degree(unsigned long id, const char* label)
 {
-    if (debug) cerr << "network_out_degree(" << id << "):" << endl;
+    if (debug) cerr << "network_out_degree(" << id << ", " << label << "):" << endl;
     
     //Net - iterator na naszą sieć (typu NETWORK)
     NET_CON::iterator net = networks.find(id);      //O(log N)
@@ -217,11 +217,9 @@ size_t network_out_degree(unsigned long id, const char* label)
 size_t network_in_degree(unsigned long id, const char* label)
 {
     if (debug) cerr << "network_in_degree(" << id << "):" << endl;
-    
-    //Net - iterator na naszą sieć (typu NETWORK)
-    NET_CON::iterator net = networks.find(id);      //O(log N)
-    
-    //Gdy nie znaleziono sieci o tym kluczu, zwracamy 0
+        
+    NET_CON::iterator net = networks.find(id);    
+    //If network does not exist, return 0
     if (net == networks.end())
     {
         if (debug) cerr << "\tno network with given id found, returning 0" << endl;
@@ -229,6 +227,7 @@ size_t network_in_degree(unsigned long id, const char* label)
     }
     
     NET_DATA::iterator node = net->second.first.find(label);
+    //If node does not exist, return 0
     if (node == net->second.first.end())
     {
         if (debug) cerr << "\tno node with this label found, returning 0" << endl;
