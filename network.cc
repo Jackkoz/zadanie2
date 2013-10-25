@@ -141,3 +141,79 @@ void network_add_node(unsigned long id, const char* label)
 	net->second.first.insert(make_pair(label, make_pair(false, label)));
 	if (debug) cerr << "\tnode with given label has been added to given network" << endl;
 }
+
+void network_add_link(unsigned long id, const char* slabel, const char* tlabel)
+{
+	if (debug) 
+	{
+		cerr << "network_add_link(" << id << ", " << slabel << ", " << tlabel << "):\n";
+	}
+
+	//If either label is null - do nothing
+	if (slabel == NULL || tlabel == NULL)
+	{
+		if (debug)
+		{
+			cerr << "At least one of the labels is NULL. Aborting\n";
+		}
+		return;	
+	} 
+
+	NETWORK_CONTAINER::iterator net = networks.find(id);		//O(log N)
+
+	//If no network with given id exists - do nothing
+	if (net == networks.end())
+	{
+		if (debug)
+		{
+			cerr << "No network with given id found. Aborting network_add_link.\n";
+		}
+		return;
+	}
+
+	pair <NET_MAP::iterator, NET_MAP::iterator> searchRange;
+	searchRange = net->second.first.equal_range(slabel);  //O(log N)
+
+	bool exists = false; //Checking if the given link already exists
+	NET_MAP::iterator it = searchRange.first;
+
+	for (it; searchRange.first != searchRange.second; searchRange.first++)
+	{
+		if (it->second.second == tlabel)
+		{
+			cerr << "Link already exists. Aborting.\n";
+			exists = true;
+		}
+	}
+	
+	if (!exists)
+	{
+		//Adding the first node if it does not exist
+		if (searchRange.first->first != slabel) 
+		{
+			if (debug)
+			{
+				cerr << "No node with first label exists, creating:\n";
+			}
+			network_add_node(id, slabel);
+		}
+
+		//Adding the second node if it does not exist
+		if (net->second.first.find(label) == net->second.first.end())
+		{
+			if (debug)
+			{
+				cerr << "No node with second label exists, creating:\n";
+			}
+			network_add_node(id, tlabel);
+		}
+		
+		//Adding the link if it does not exist
+		if (debug)
+		{
+			cerr << "Added link from node" << slabel << " to node " << tlabel <<".\n";
+		}
+		net->insert(make_pair(slabel, make_pair(true, tlabel) ) );
+		net->insert(make_pair(tlabel, make_pair(false, slabel) ) );
+	}
+}
