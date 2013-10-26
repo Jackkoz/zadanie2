@@ -245,6 +245,15 @@ void network_add_node(unsigned long id, const char* label)
 }
 
 
+/*
+ * If network "id" exists, and slabel, tlabel != NULL, and
+ * link (slabel -> tlabel) not in "id", add such link to "id";
+ * otherwise do nothing.
+ * If one of the given nodes not in "id", also add it.
+ * 
+ * Complexity: O(log N + log n + log m)
+ * 
+ */
 void network_add_link(unsigned long id, const char* slabel, const char* tlabel)
 {
     if (debug) 
