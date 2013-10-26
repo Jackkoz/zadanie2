@@ -403,6 +403,12 @@ void network_remove_link(unsigned long id, const char* slabel, const char* tlabe
         return;
     }
     
+    if (is_growing(net))
+    {
+        if (debug) cerr <<"\tNetwork " << id << " is growing. Can't remove link. Returning." << endl;
+        return;
+    }
+    
     NET_DATA::iterator snode = net->second.first.find(slabel);
     NET_DATA::iterator tnode = net->second.first.find(tlabel);
     assert(snode != net->second.first.end() && tnode != net->second.first.end());
