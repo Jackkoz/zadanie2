@@ -143,7 +143,7 @@ void network_delete(unsigned long id)
     
     int n = networks.erase(id);
     
-    if (debug) cerr << "\t" << n << " networks have been deleted" << endl;
+    if (debug) cerr << '\t' << n << " networks have been deleted" << endl;
 }
 
 
@@ -258,7 +258,7 @@ void network_add_node(unsigned long id, const char* label)
  */
 void network_add_link(unsigned long id, const char* slabel, const char* tlabel)
 {
-    if (debug) cerr << "network_add_link(" << id << ", " << slabel << ", " << tlabel << "):\n";
+    if (debug) cerr << "network_add_link(" << id << ", " << slabel << ", " << tlabel << "):" << endl;
 
     //If either label is null - do nothing
     if (!(slabel && tlabel))
@@ -320,7 +320,7 @@ void network_add_link(unsigned long id, const char* slabel, const char* tlabel)
  */
 void network_remove_node(unsigned long id, const char* label)
 {
-    if (debug) cerr << "network_remove_node(" << id << ", " << label << "):\n";
+    if (debug) cerr << "network_remove_node(" << id << ", " << label << "):" << endl;
 
     if (!label)
     {
