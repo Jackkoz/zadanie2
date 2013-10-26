@@ -205,37 +205,33 @@ size_t network_links_number(unsigned long id)
  */
 void network_add_node(unsigned long id, const char* label)
 {
-    if (debug) cerr << "network_add_node(" << id << ", " << label << "):" << endl;
+    if (debug) cerr << "network_add_node(" << id << ", " << label << "):" << endl;    
     
-    //Gdy pusty napis, to nic nie robię
-    if (label == NULL)
-    {
-    	if (debug)
-    	{
-    		cerr << "No node with given label. Aborting.\n";
-    	}
-    	return;
-    }
-    
-    NET_CON::iterator net = networks.find(id);      //O(log N)
-    
-    //Gdy sieć nie istnieje, to nic nie robię
-    if (net == networks.end())
+    //If no such network exists, do nothing
+    if (!exists(networks, id))
     {
         if (debug) cerr << "\tno network with given id found" << endl;
         return;
     }
+    NET_CON::iterator net = networks.find(id);
+    
+    //If label is NULL, do nothing
+    if (label == NULL)
+    {
+    	if (debug) cerr << "Given a NULL-label. Aborting.\n";    	
+    	return;
+    }
     
     NET_DATA::iterator node = net->second.first.find(label);    //O(log m)
     
-    //Gdy element o etykiecie label istnieje, nic nie robię
-    if (node != net->second.first.end())
+    //If node "label" exists, do nothing
+    if (contains_node(net->second.first, label))
     {
         if (debug) cerr << "\tnode with given label already exists in given network, returning" << endl;
         return;
     }
     
-    //Dodaję element
+    //Add the node
     net->second.first.insert(make_pair(label, NODE_VAL()));
     if (debug) cerr << "\tnode with given label has been added to given network" << endl;
 }
