@@ -116,7 +116,7 @@ unsigned long network_new(int growing)
  * If network "id" exists, remove it, otherwise
  * do nothing.
  * 
- * Complexity: O(log N)
+ * Complexity: O(n + m + log N)
  * 
  */
 void network_delete(unsigned long id)
