@@ -498,21 +498,23 @@ size_t network_in_degree(unsigned long id, const char* label)
 {
     if (debug) cerr << "network_in_degree(" << id << "):" << endl;
         
-    NET_CON::iterator net = networks.find(id);    
-    //If network does not exist, return 0
-    if (net == networks.end())
+    //Gdy nie znaleziono sieci o tym kluczu, to zwracamy 0
+    if (!exists(networks, id))
     {
         if (debug) cerr << "\tno network with given id found, returning 0" << endl;
         return 0;
     }
     
-    NET_DATA::iterator node = net->second.first.find(label);
-    //If node does not exist, return 0
-    if (node == net->second.first.end())
+    //Net - iterator na naszą sieć (typu NETWORK)
+    NET_CON::iterator net = networks.find(id);      //O(log N)
+    
+    if (!contains_node(net->second.first, label))
     {
         if (debug) cerr << "\tno node with this label found, returning 0" << endl;
         return 0;
     }
+    
+    NET_DATA::iterator node = net->second.first.find(label);
     
     if (debug) cerr << "\t" << node->second.first.size() << " incoming edges have been found" << endl;
     
