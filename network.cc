@@ -440,6 +440,13 @@ void network_clear(unsigned long id)
 }
 
 
+/*
+ * If network "id" exists and contains node "label", return the count
+ * of links going out from "label". Otherwise return 0.
+ * 
+ * Complexity: O(log N + log n)
+ * 
+ */
 size_t network_out_degree(unsigned long id, const char* label)
 {
     if (debug) cerr << "network_out_degree(" << id << ", " << label << "):" << endl;
