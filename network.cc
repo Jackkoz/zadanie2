@@ -123,16 +123,13 @@ void network_delete(unsigned long id)
 {
     if (debug) cerr << "network_delete(" << id << "):" << endl;
 
-    NET_CON::iterator net = networks.find(id);      //O(log N)
-
-    if (net == networks.end())
+    if (!exists(networks, id))
     {
-    	if (debug)
-    	{
-    		cerr << "No network with given id. Aborting.\n";
-    	}
-    	return;
+        if (debug) cerr << "\tNo network with given id found. Returning.\n";
+        return;
     }
+    
+    NET_CON::iterator net = networks.find(id);
     
     int n = networks.erase(id);
     
@@ -151,15 +148,13 @@ size_t network_nodes_number(unsigned long id)
 {
     if (debug) cerr << "network_nodes_number(" << id << "):" << endl;
     
-    //Net - iterator na naszą sieć (typu NETWORK)
-    NET_CON::iterator net = networks.find(id);      //O(log N)
-    
-    //Gdy nie znaleziono sieci o tym kluczu, to ze specyfikacji zwracamy 0
-    if (net == networks.end())
+    if (!exists(networks, id))
     {
-        if (debug) cerr << "\tno network with given id found, returning 0" << endl;
+        if (debug) cerr << "\tNo network with given id found. Returning 0.\n";
         return 0;
     }
+    
+    NET_CON::iterator net = networks.find(id);
         
     if (debug) cerr << "\tgiven network consists out of " << net->second.first.size() << " keys" << endl;
     return net->second.first.size();
@@ -176,6 +171,7 @@ size_t network_nodes_number(unsigned long id)
 size_t network_links_number(unsigned long id)
 {
     if (debug) cerr << "network_links_number(" << id << "):" << endl;
+    
     if (!exists(networks, id))
     {
         if (debug) cerr << "\tNo network with given id found. Returning 0.\n";
