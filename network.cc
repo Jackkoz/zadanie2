@@ -310,46 +310,49 @@ void network_remove_node(unsigned long id, const char* label)
 {
     if (debug) cerr << "network_remove_node(" << id << ", " << label << "):\n";
 
-    if (label == NULL)
+    if (!label)
     {
         if (debug) cerr << "\tLabel is null. Aborting.\n";
         return;
     }
-
-    NET_CON::iterator net = networks.find(id);        //O(log N)
-
+    
     //If no network with given id exists - do nothing
-    if (net == networks.end())
+    if (!exists(networks, id))
     {
         if (debug) cerr << "\tNo network with given id found. Aborting.\n";
         return;
     }   
+    NET_CON::iterator net = networks.find(id);
 
-    if (!contains_node(net->second.first, label))
-    {
-        if (debug) cerr <<"\tNo such node in this network, returning." << endl;
-        return;
-    }
-    
+    //This check goes first, since its faster than the next one
     if (is_growing(net))
     {
         if (debug) cerr <<"\tNetwork " << id << " is growing. Can't remove node. Returning." << endl;
         return;
     }
-
-    NET_DATA::iterator node = net->second.first.find(label);
-    set<NODE>::iterator it;
-
-    for (it = node->second.first.begin(); it != node->second.first.end(); it++)
+    
+    if (!contains_node(net->second.first, label))
     {
-    	net->second.first.find(*it)->second.second.erase(label);
+        if (debug) cerr <<"\tNo such node in this network, returning." << endl;
+        return;
+    }
+    NET_DATA::iterator node = net->second.first.find(label);
+    
+    //Take care of the links coming into the node
+    for (set<NODE>::iterator source_node = node->second.first.begin(); source_node != node->second.first.end(); ++source_node)
+    {
+        //Get the node our link comes from, and remove the info about it from that node
+    	net->second.first.find(*source_node)->second.second.erase(label);
     }
     
-    for (it = node->second.second.begin(); it != node->second.second.end(); it++)
+    //Take care of the links going out of the node
+    for (set<NODE>::iterator target_node = node->second.second.begin(); target_node != node->second.second.end(); ++target_node)
     {
-    	net->second.first.find(*it)->second.first.erase(label);
+        //Find the node our link goes to, and remove the info about it from that node
+    	net->second.first.find(*target_node)->second.first.erase(label);
     }
 
+    //Remove the actual node
     net->second.first.erase(net->second.first.find(label));
 }
 
