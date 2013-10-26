@@ -345,6 +345,12 @@ void network_remove_node(unsigned long id, const char* label)
         if (debug) cerr <<"\tNo such node in this network, returning." << endl;
         return;
     }
+    
+    if (is_growing(net))
+    {
+        if (debug) cerr <<"\tNetwork " << id << " is growing. Can't remove node. Returning." << endl;
+        return;
+    }
 
     NET_DATA::iterator node = net->second.first.find(label);
     set<NODE>::iterator it;
