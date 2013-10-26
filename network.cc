@@ -245,85 +245,6 @@ void network_add_node(unsigned long id, const char* label)
 }
 
 
-void network_clear(unsigned long id)
-{
-    if (debug) cerr << "network_clear(" << id << "):" << endl;
-    
-    //Net - iterator na naszą sieć (typu NETWORK)
-    NET_CON::iterator net = networks.find(id);      //O(log N)
-    
-    //Gdy nie znaleziono sieci o tym kluczu, to nic nie robimy
-    if (net == networks.end())
-    {
-        if (debug) cerr << "\tno network with given id found, returning" << endl;
-        return;
-    }
-    
-    //Gdy sieć jest rosnąca, nic nie robimy
-    if (is_growing(net))
-    {
-        if (debug) cerr << "\tgrowing network, can't clear, returning" << endl;
-        return;
-    }
-        
-    net->second.first.clear();
-    if (debug) cerr << "\tnetwork has been cleared" << endl;
-}
-
-
-size_t network_out_degree(unsigned long id, const char* label)
-{
-    if (debug) cerr << "network_out_degree(" << id << ", " << label << "):" << endl;
-    
-    //Net - iterator na naszą sieć (typu NETWORK)
-    NET_CON::iterator net = networks.find(id);      //O(log N)
-    
-    //Gdy nie znaleziono sieci o tym kluczu, zwracamy 0
-    if (net == networks.end())
-    {
-        if (debug) cerr << "\tno network with given id found, returning 0" << endl;
-        return 0;
-    }
-    
-    NET_DATA::iterator node = net->second.first.find(label);
-    if (node == net->second.first.end())
-    {
-        if (debug) cerr << "\tno node with this label found, returning 0" << endl;
-        return 0;
-    }
-    
-    if (debug) cerr << "\t" << node->second.second.size() << " outgoing edges have been found" << endl;
-    
-    return node->second.second.size();
-}
-
-
-size_t network_in_degree(unsigned long id, const char* label)
-{
-    if (debug) cerr << "network_in_degree(" << id << "):" << endl;
-        
-    NET_CON::iterator net = networks.find(id);    
-    //If network does not exist, return 0
-    if (net == networks.end())
-    {
-        if (debug) cerr << "\tno network with given id found, returning 0" << endl;
-        return 0;
-    }
-    
-    NET_DATA::iterator node = net->second.first.find(label);
-    //If node does not exist, return 0
-    if (node == net->second.first.end())
-    {
-        if (debug) cerr << "\tno node with this label found, returning 0" << endl;
-        return 0;
-    }
-    
-    if (debug) cerr << "\t" << node->second.first.size() << " incoming edges have been found" << endl;
-    
-    return node->second.first.size();
-}
-    
-
 void network_add_link(unsigned long id, const char* slabel, const char* tlabel)
 {
     if (debug) 
@@ -460,3 +381,82 @@ void network_remove_link(unsigned long id, const char* slabel, const char* tlabe
     if (debug) cerr << "\tLink erased." << endl;
 }
 
+
+void network_clear(unsigned long id)
+{
+    if (debug) cerr << "network_clear(" << id << "):" << endl;
+    
+    //Net - iterator na naszą sieć (typu NETWORK)
+    NET_CON::iterator net = networks.find(id);      //O(log N)
+    
+    //Gdy nie znaleziono sieci o tym kluczu, to nic nie robimy
+    if (net == networks.end())
+    {
+        if (debug) cerr << "\tno network with given id found, returning" << endl;
+        return;
+    }
+    
+    //Gdy sieć jest rosnąca, nic nie robimy
+    if (is_growing(net))
+    {
+        if (debug) cerr << "\tgrowing network, can't clear, returning" << endl;
+        return;
+    }
+        
+    net->second.first.clear();
+    if (debug) cerr << "\tnetwork has been cleared" << endl;
+}
+
+
+size_t network_out_degree(unsigned long id, const char* label)
+{
+    if (debug) cerr << "network_out_degree(" << id << ", " << label << "):" << endl;
+    
+    //Net - iterator na naszą sieć (typu NETWORK)
+    NET_CON::iterator net = networks.find(id);      //O(log N)
+    
+    //Gdy nie znaleziono sieci o tym kluczu, zwracamy 0
+    if (net == networks.end())
+    {
+        if (debug) cerr << "\tno network with given id found, returning 0" << endl;
+        return 0;
+    }
+    
+    NET_DATA::iterator node = net->second.first.find(label);
+    if (node == net->second.first.end())
+    {
+        if (debug) cerr << "\tno node with this label found, returning 0" << endl;
+        return 0;
+    }
+    
+    if (debug) cerr << "\t" << node->second.second.size() << " outgoing edges have been found" << endl;
+    
+    return node->second.second.size();
+}
+
+
+size_t network_in_degree(unsigned long id, const char* label)
+{
+    if (debug) cerr << "network_in_degree(" << id << "):" << endl;
+        
+    NET_CON::iterator net = networks.find(id);    
+    //If network does not exist, return 0
+    if (net == networks.end())
+    {
+        if (debug) cerr << "\tno network with given id found, returning 0" << endl;
+        return 0;
+    }
+    
+    NET_DATA::iterator node = net->second.first.find(label);
+    //If node does not exist, return 0
+    if (node == net->second.first.end())
+    {
+        if (debug) cerr << "\tno node with this label found, returning 0" << endl;
+        return 0;
+    }
+    
+    if (debug) cerr << "\t" << node->second.first.size() << " incoming edges have been found" << endl;
+    
+    return node->second.first.size();
+}
+    
