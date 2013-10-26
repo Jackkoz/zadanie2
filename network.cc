@@ -248,44 +248,36 @@ void network_add_node(unsigned long id, const char* label)
  */
 void network_add_link(unsigned long id, const char* slabel, const char* tlabel)
 {
-    if (debug) 
-    {
-        cerr << "network_add_link(" << id << ", " << slabel << ", " << tlabel << "):\n";
-    }
+    if (debug) cerr << "network_add_link(" << id << ", " << slabel << ", " << tlabel << "):\n";
 
     //If either label is null - do nothing
-    if (slabel == NULL || tlabel == NULL)
+    if (!(slabel && tlabel))
     {
-        if (debug)
-        {
-            cerr << "\tAt least one of the labels is NULL. Aborting\n";
-        }
+        if (debug) cerr << "\tAt least one of the labels is NULL. Aborting\n";
         return; 
     } 
 
-    NET_CON::iterator net = networks.find(id);      //O(log N)
-
     //If no network with given id exists - do nothing
-    if (net == networks.end())
+    if (!exists(networks, id))
     {
-        if (debug)
-        {
-            cerr << "\tNo network with given id found. Aborting network_add_link.\n";
-        }
+        if (debug) cerr << "\tNo network with given id found. Aborting network_add_link.\n";
         return; 
     }
+    NET_CON::iterator net = networks.find(id);      //O(log N)
     
+    //If some of the nodes are missing, add them
     if (!contains_node(net->second.first, slabel))
     {
-        network_add_node(id, slabel);
         if (debug) cerr << "\tSource node does not exist, adding." << endl;
+        network_add_node(id, slabel);
     }
     if (!contains_node(net->second.first, tlabel))
     {
-        network_add_node(id, tlabel);
         if (debug) cerr << "\tTarget node does not exist, adding." << endl;
+        network_add_node(id, tlabel);
     }
     
+    //If the link already exists, do nothing
     if (contains_link(net->second.first, slabel, tlabel))
     {
         if (debug) cerr << "\tGiven link already exists, returning." << endl;
@@ -297,6 +289,7 @@ void network_add_link(unsigned long id, const char* slabel, const char* tlabel)
     assert(snode != net->second.first.end());
     assert(tnode != net->second.first.end());
     
+    //Add the actual link
     snode->second.second.insert(tlabel);
     tnode->second.first.insert(slabel);
     
