@@ -243,7 +243,7 @@ void network_add_node(unsigned long id, const char* label)
     
     //*** Actual code **************************************************
     net->second.first.insert(make_pair(label, NODE_VAL()));
-    if (debug) cerr << "\tnode with given label has been added to given network." << endl;
+    if (debug) cerr << "\tNode with given label has been added to given network." << endl;
 }
 
 
