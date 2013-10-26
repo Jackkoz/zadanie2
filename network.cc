@@ -57,6 +57,13 @@ inline bool contains_link(const NET_DATA& net_data, const char* slabel, const ch
 /**********************************************************************/
 
 
+/*** KOMUNIKATY *******************************************************/
+const char CE_NETWORK_NOT_FOUND[] = "Network not found.";
+const char CE_LABEL_IS_NULL[] = "Label is NULL.";
+const char CE_FATAL[] = "Fatal error encountered. Returning neutral value or void.";
+/**********************************************************************/
+
+
 /*** IMPLEMENTACJE FUNKCJI POMOCNICZYCH *******************************/
 inline bool exists(const NET_CON& networks, const unsigned long id)
 {
@@ -125,7 +132,7 @@ void network_delete(unsigned long id)
 
     if (!exists(networks, id))
     {
-        if (debug) cerr << "\tNo network with given id found. Returning.\n";
+        if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
         return;
     }
     
@@ -150,7 +157,7 @@ size_t network_nodes_number(unsigned long id)
     
     if (!exists(networks, id))
     {
-        if (debug) cerr << "\tNo network with given id found. Returning 0.\n";
+        if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
         return 0;
     }
     
@@ -174,7 +181,7 @@ size_t network_links_number(unsigned long id)
     
     if (!exists(networks, id))
     {
-        if (debug) cerr << "\tNo network with given id found. Returning 0.\n";
+        if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
         return 0;
     }
     
@@ -218,7 +225,7 @@ void network_add_node(unsigned long id, const char* label)
     //If no such network exists, do nothing
     if (!exists(networks, id))
     {
-        if (debug) cerr << "\tno network with given id found" << endl;
+        if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
         return;
     }
     NET_CON::iterator net = networks.find(id);
@@ -260,7 +267,7 @@ void network_add_link(unsigned long id, const char* slabel, const char* tlabel)
     //If no network with given id exists - do nothing
     if (!exists(networks, id))
     {
-        if (debug) cerr << "\tNo network with given id found. Aborting network_add_link.\n";
+        if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
         return; 
     }
     NET_CON::iterator net = networks.find(id);      //O(log N)
@@ -321,7 +328,7 @@ void network_remove_node(unsigned long id, const char* label)
     //If no network with given id exists - do nothing
     if (!exists(networks, id))
     {
-        if (debug) cerr << "\tNo network with given id found. Aborting.\n";
+        if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
         return;
     }   
     NET_CON::iterator net = networks.find(id);
@@ -378,7 +385,7 @@ void network_remove_link(unsigned long id, const char* slabel, const char* tlabe
     
     if (!exists(networks, id))
     {
-        if (debug) cerr << "\tNo network with given id found. Returning 0.\n";
+        if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
         return;
     }    
     NET_CON::iterator net = networks.find(id);
@@ -433,7 +440,7 @@ void network_clear(unsigned long id)
         
     if (!exists(networks, id))
     {
-        if (debug) cerr << "\tNo network with given id found, returning" << endl;
+        if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
         return;
     }    
     NET_CON::iterator net = networks.find(id);      //O(log N)
@@ -469,7 +476,7 @@ size_t network_out_degree(unsigned long id, const char* label)
     
     if (!exists(networks, id))
     {
-        if (debug) cerr << "\tno network with given id found, returning 0" << endl;
+        if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
         return 0;
     }
     NET_CON::iterator net = networks.find(id);      //O(log N)
@@ -506,7 +513,7 @@ size_t network_in_degree(unsigned long id, const char* label)
     
     if (!exists(networks, id))
     {
-        if (debug) cerr << "\tno network with given id found, returning 0" << endl;
+        if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
         return 0;
     }
     NET_CON::iterator net = networks.find(id);      //O(log N)
