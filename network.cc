@@ -143,7 +143,7 @@ void network_delete(unsigned long id)
     
     //*** Actual code **************************************************
     int n = networks.erase(id);    
-    if (debug) cerr << '\t' << n << " networks have been deleted" << endl;
+    if (debug) cerr << '\t' << n << " networks have been deleted." << endl;
 }
 
 
@@ -167,7 +167,7 @@ size_t network_nodes_number(unsigned long id)
     NET_CON::iterator net = networks.find(id);
         
     //*** Actual code **************************************************
-    if (debug) cerr << "\tGiven network consists out of " << net->second.first.size() << " keys" << endl;
+    if (debug) cerr << "\tGiven network consists out of " << net->second.first.size() << " keys." << endl;
     return net->second.first.size();
 }
 
@@ -202,7 +202,7 @@ size_t network_links_number(unsigned long id)
         links_count += (*node++).second.first.size();
     }
     
-    if (debug) cerr << "\tGiven network has " << links_count << " links" << endl;
+    if (debug) cerr << "\tGiven network has " << links_count << " links." << endl;
     
     return links_count;
 }
@@ -243,7 +243,7 @@ void network_add_node(unsigned long id, const char* label)
     
     //*** Actual code **************************************************
     net->second.first.insert(make_pair(label, NODE_VAL()));
-    if (debug) cerr << "\tnode with given label has been added to given network" << endl;
+    if (debug) cerr << "\tnode with given label has been added to given network." << endl;
 }
 
 
@@ -366,6 +366,7 @@ void network_remove_node(unsigned long id, const char* label)
 
     //*** Actual code **************************************************
     net->second.first.erase(net->second.first.find(label));
+    if (debug) cerr << "\tNode has been removed." << endl;
 }
 
 
@@ -457,7 +458,7 @@ void network_clear(unsigned long id)
         
     //*** Actual code **************************************************
     net->second.first.clear();
-    if (debug) cerr << "\tnetwork has been cleared" << endl;
+    if (debug) cerr << "\tNetwork has been cleared." << endl;
 }
 
 
@@ -494,7 +495,7 @@ size_t network_out_degree(unsigned long id, const char* label)
     NET_DATA::iterator node = net->second.first.find(label);
     
     //*** Actual code **************************************************
-    if (debug) cerr << "\t" << node->second.second.size() << " outgoing edges have been found" << endl;
+    if (debug) cerr << "\t" << node->second.second.size() << " outgoing edges have been found." << endl;
     return node->second.second.size();
 }
 
@@ -532,7 +533,7 @@ size_t network_in_degree(unsigned long id, const char* label)
     NET_DATA::iterator node = net->second.first.find(label);
         
     //*** Actual code **************************************************
-    if (debug) cerr << "\t" << node->second.first.size() << " outgoing edges have been found" << endl;
+    if (debug) cerr << "\t" << node->second.first.size() << " outgoing edges have been found." << endl;
     return node->second.first.size();
 }
     
