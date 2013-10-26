@@ -474,6 +474,13 @@ size_t network_out_degree(unsigned long id, const char* label)
 }
 
 
+/*
+ * If network "id" exists and contains node "label", return the count
+ * of links coming into "label". Otherwise return 0.
+ * 
+ * Complexity: O(log N + log n)
+ * 
+ */
 size_t network_in_degree(unsigned long id, const char* label)
 {
     if (debug) cerr << "network_in_degree(" << id << "):" << endl;
