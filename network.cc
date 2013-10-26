@@ -278,6 +278,8 @@ void network_add_link(unsigned long id, const char* slabel, const char* tlabel)
     }
     
     //If the link already exists, do nothing
+    //WARNING: This function assumes, that both of the nodes exists, so
+    // it HAS to be run after the two previous contains_node functions!
     if (contains_link(net->second.first, slabel, tlabel))
     {
         if (debug) cerr << "\tGiven link already exists, returning." << endl;
