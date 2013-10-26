@@ -317,7 +317,8 @@ void network_add_link(unsigned long id, const char* slabel, const char* tlabel)
  * remove "label" from "id" (including its in- and outgoing edges).
  * Otherwise do nothing.
  * 
- * Complexity: O(log N + log n + log m)
+ * Complexity: O(k + log N + log n + log m)
+ *      k - number of links starting or ending at the node "label"
  * 
  */
 void network_remove_node(unsigned long id, const char* label)
@@ -362,6 +363,13 @@ void network_remove_node(unsigned long id, const char* label)
 }
 
 
+/*
+ * If a non-growing network "id" exists, and contains a link
+ * (slabel, tlabel), remove the link. Otherwise do nothing.
+ * 
+ * Complexity: O(log N + log n + log m)
+ * 
+ */
 void network_remove_link(unsigned long id, const char* slabel, const char* tlabel)
 {
     if (debug) cerr << "network_remove_link(" << id << ", " << slabel << ", " << tlabel << "):" << endl;
