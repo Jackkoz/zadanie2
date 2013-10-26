@@ -166,6 +166,13 @@ size_t network_nodes_number(unsigned long id)
 }
 
 
+/*
+ * If network "id" exists, return its links number, otherwise
+ * return 0.
+ * 
+ * Complexity: O(n + log N)
+ * 
+ */
 size_t network_links_number(unsigned long id)
 {
     if (debug) cerr << "network_links_number(" << id << "):" << endl;
