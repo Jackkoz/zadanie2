@@ -85,12 +85,12 @@ inline bool contains_link(const NET_DATA& net_data, const char* slabel, const ch
 /**********************************************************************/
 
 /*
- * Tworzy nową, pustą, sieć i zwraca jej identyfikator.
- * Sieć pusta, to sieć z pustym zbiorem węzłów.
- * Parametr growing mówi o tym, czy nowa sieć
- * ma być rosnąca (growing != 0) czy nie (growing == 0).
+ * Create new empty network and return its id.
  * 
- * Złożoność obliczeniowa O(1)
+ * Parameter growing says, wheter the new netrowk
+ * shall be growing (growing != 0) or not (growing == 0).
+ * 
+ * Complexity: O(1)
  * 
  */
 unsigned long network_new(int growing)
