@@ -199,7 +199,14 @@ size_t network_links_number(unsigned long id)
 }
 
 
-//Złożoność: O(log N + log m)
+/*
+ * If network "id" exists and label != NULL, and
+ * node "label" not in "id", add node "label" to "id".
+ * Otherwise do nothing.
+ * 
+ * Complexity: O(log N + log n)
+ * 
+ */
 void network_add_node(unsigned long id, const char* label)
 {
     if (debug) cerr << "network_add_node(" << id << ", " << label << "):" << endl;
