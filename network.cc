@@ -163,8 +163,7 @@ size_t network_nodes_number(unsigned long id)
     {
         if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
         return 0;
-    }
-    
+    }    
     NET_CON::iterator net = networks.find(id);
         
     //*** Actual code **************************************************
@@ -190,9 +189,9 @@ size_t network_links_number(unsigned long id)
         if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
         return 0;
     }
+    NET_CON::iterator net = networks.find(id);
     
     //*** Actual code **************************************************
-    NET_CON::iterator net = networks.find(id);
     
     size_t links_count = 0;
     
@@ -296,12 +295,12 @@ void network_add_link(unsigned long id, const char* slabel, const char* tlabel)
         return;
     }
     
-    //*** Actual code **************************************************
     NET_DATA::iterator snode = net->second.first.find(slabel);
     NET_DATA::iterator tnode = net->second.first.find(tlabel);
     assert(snode != net->second.first.end());
     assert(tnode != net->second.first.end());
     
+    //*** Actual code **************************************************
     //Add the actual link
     snode->second.second.insert(tlabel);
     tnode->second.first.insert(slabel);
@@ -448,7 +447,7 @@ void network_clear(unsigned long id)
         if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
         return;
     }    
-    NET_CON::iterator net = networks.find(id);      //O(log N)
+    NET_CON::iterator net = networks.find(id);
     
     if (is_growing(net))
     {
@@ -485,7 +484,7 @@ size_t network_out_degree(unsigned long id, const char* label)
         if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
         return 0;
     }
-    NET_CON::iterator net = networks.find(id);      //O(log N)
+    NET_CON::iterator net = networks.find(id);
     
     if (!contains_node(net->second.first, label))
     {
@@ -523,7 +522,7 @@ size_t network_in_degree(unsigned long id, const char* label)
         if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
         return 0;
     }
-    NET_CON::iterator net = networks.find(id);      //O(log N)
+    NET_CON::iterator net = networks.find(id);
     
     if (!contains_node(net->second.first, label))
     {
