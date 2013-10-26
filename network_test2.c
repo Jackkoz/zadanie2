@@ -5,10 +5,11 @@
 
 int main()
 {
-    unsigned long n, x;
+    unsigned long n, x, y;
 
     n = network_new(0);
     x = network_new(1);
+    y = network_new(-15);
     
     int i = 1;
 
@@ -88,7 +89,7 @@ int main()
     }
     printf(">>>>>assert %d passed\n\n", i++);
 
-	char c;
+	char c,d;
     for (c = 'a'; c <= 'z'; c++)
     {
         //printf("%c\n", c); Wypisuje poprawnie alfabet
@@ -97,11 +98,50 @@ int main()
         network_nodes_number(x);
     }
 
-    printf("%d\n", network_nodes_number(x));
+
+
 
     assert(network_nodes_number(x) == 26);
     assert(network_links_number(x) == 2);
     
+
+    printf("*****\nALL ASSERTIONS PASSED\n*****\n\n");
+
+    int licznik = 0;
+
+    for (c = 'a'; c <= 'z'; c++)
+    {
+        for (d = 'a'; d <= 'z'; d++)
+        {
+            char temp1[2] = {c, '\0'};
+            char temp2[2] = {d, '\0'};
+            network_add_link(y, temp1, temp2);
+            licznik++;
+            assert(network_links_number(y) == licznik);
+        }
+    }
+
+    printf(">>>>>assert %d passed\n\n", i++);
+
+    network_clear(y);
+    assert(network_links_number(y) == licznik);
+    assert(network_nodes_number(y) == 26);
+
+    printf(">>>>>assert %d passed\n\n", i++);
+
+    for (c = 'a'; c <= 'z'; c++)
+    {
+        for (d = 'a'; d <= 'z'; d++)
+        {
+            char temp1[2] = {c, '\0'};
+            char temp2[2] = {d, '\0'};
+            network_remove_link(y, temp1, temp2);
+            assert(network_links_number(y) == licznik);
+            assert(network_nodes_number(y) == 26);
+        }
+    }
+
+    printf(">>>>>assert %d passed\n\n", i++);
 
     printf("*****\nALL ASSERTIONS PASSED\n*****\n\n");
 
