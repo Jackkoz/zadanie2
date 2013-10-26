@@ -89,7 +89,7 @@ int main()
     printf(">>>>>assert %d passed\n\n", i++);
 
 	char c;
-    for (c = 'a'; c <= 'd'; c++)
+    for (c = 'a'; c <= 'z'; c++)
     {
         //printf("%c\n", c); Wypisuje poprawnie alfabet
         char temp[2] = {c,'\0'};
