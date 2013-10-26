@@ -140,7 +140,13 @@ void network_delete(unsigned long id)
 }
 
 
-//Złożoność: O(log N)
+/*
+ * If network "id" exists, return its nodes number, otherwise
+ * return 0.
+ * 
+ * Complexity: O(log N)
+ * 
+ */
 size_t network_nodes_number(unsigned long id)
 {
     if (debug) cerr << "network_nodes_number(" << id << "):" << endl;
