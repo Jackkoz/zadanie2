@@ -407,6 +407,13 @@ void network_remove_link(unsigned long id, const char* slabel, const char* tlabe
 }
 
 
+/*
+ * If a non-growing network "id" exists, remove all its nodes and links,
+ * otherwise do nothing.
+ * 
+ * Complexity: O(n + m + log N)
+ * 
+ */
 void network_clear(unsigned long id)
 {
     if (debug) cerr << "network_clear(" << id << "):" << endl;
