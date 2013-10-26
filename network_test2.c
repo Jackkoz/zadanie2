@@ -76,7 +76,9 @@ int main()
     assert(network_links_number(x) == 2);
     printf(">>>>>assert %d passed\n\n", i++);
 
-    for (int j = 0; j < 1000; j++)
+	int j;
+
+    for (j = 0; j < 1000; j++)
     {
         network_add_link(x, "a", "b");
         network_clear(x);
@@ -86,11 +88,13 @@ int main()
     }
     printf(">>>>>assert %d passed\n\n", i++);
 
-    for (char c = 'a'; c <= 'd'; c++)
+	char c;
+    for (c = 'a'; c <= 'd'; c++)
     {
         //printf("%c\n", c); Wypisuje poprawnie alfabet
-        char temp[1] = {c};
+        char temp[2] = {c,'\0'};
         network_add_node(x, temp);
+        network_nodes_number(x);
     }
 
     printf("%d\n", network_nodes_number(x));
