@@ -429,16 +429,16 @@ void network_remove_link(unsigned long id, const char* slabel, const char* tlabe
 void network_clear(unsigned long id)
 {
     if (debug) cerr << "network_clear(" << id << "):" << endl;
-    
-    //Net - iterator na naszą sieć (typu NETWORK)
-    NET_CON::iterator net = networks.find(id);      //O(log N)
-    
+        
     //Gdy nie znaleziono sieci o tym kluczu, to nic nie robimy
-    if (net == networks.end())
+    if (!exists(networks, id))
     {
         if (debug) cerr << "\tno network with given id found, returning" << endl;
         return;
     }
+    
+    //Net - iterator na naszą sieć (typu NETWORK)
+    NET_CON::iterator net = networks.find(id);      //O(log N)
     
     //Gdy sieć jest rosnąca, nic nie robimy
     if (is_growing(net))
