@@ -25,6 +25,9 @@ net_test: clean net_test.c network.o growingnet.o
 	gcc -c net_test.c
 	$(CPP) $(CPPFLAGS) $(LDFLAGS) net_test.o network.o growingnet.o -o $@
 
+network_test2: clean network_test2.c network.o growingnet.o
+	gcc -c network_test2.c
+	$(CPP) $(CPPFLAGS) $(LDFLAGS) network_test2.c network.o growingnet.o -o $@
 network_test1: clean network_test1.c network.o growingnet.o
 	gcc -c network_test1.c
 	$(CPP) $(CPPFLAGS) $(LDFLAGS) network_test1.c network.o growingnet.o -o $@
