@@ -369,13 +369,25 @@ void network_remove_node(unsigned long id, const char* label)
 void network_remove_link(unsigned long id, const char* slabel, const char* tlabel)
 {
     if (debug) cerr << "network_remove_link(" << id << ", " << slabel << ", " << tlabel << "):" << endl;
+    
+    if (!(slabel && tlabel))
+    {
+        if (debug) cerr << "\tAt least one of the labels is NULL. Aborting\n";
+        return; 
+    } 
+    
     if (!exists(networks, id))
     {
         if (debug) cerr << "\tNo network with given id found. Returning 0.\n";
         return;
-    }
-    
+    }    
     NET_CON::iterator net = networks.find(id);
+    
+    if (is_growing(net))
+    {
+        if (debug) cerr <<"\tNetwork " << id << " is growing. Can't remove link. Returning." << endl;
+        return;
+    }
     
     if (!contains_node(net->second.first, slabel))
     {
@@ -387,15 +399,13 @@ void network_remove_link(unsigned long id, const char* slabel, const char* tlabe
         if (debug) cerr << "\tTarget node does not exist, returning." << endl;
         return;
     }
+        
+    //If the link does not exist, do nothing
+    //WARNING: This function assumes, that both of the nodes exists, so
+    // it HAS to be run after the two previous contains_node functions!
     if (!contains_link(net->second.first, slabel, tlabel))
     {
         if (debug) cerr << "\tNo such link in network, returning." << endl;
-        return;
-    }
-    
-    if (is_growing(net))
-    {
-        if (debug) cerr <<"\tNetwork " << id << " is growing. Can't remove link. Returning." << endl;
         return;
     }
     
@@ -403,6 +413,7 @@ void network_remove_link(unsigned long id, const char* slabel, const char* tlabe
     NET_DATA::iterator tnode = net->second.first.find(tlabel);
     assert(snode != net->second.first.end() && tnode != net->second.first.end());
     
+    //Do the actual erasing
     snode->second.second.erase(tlabel);
     tnode->second.first.erase(slabel);
     if (debug) cerr << "\tLink erased." << endl;
