@@ -166,6 +166,32 @@ size_t network_nodes_number(unsigned long id)
 }
 
 
+size_t network_links_number(unsigned long id)
+{
+    if (debug) cerr << "network_links_number(" << id << "):" << endl;
+    if (!exists(networks, id))
+    {
+        if (debug) cerr << "\tNo network with given id found. Returning 0.\n";
+        return 0;
+    }
+    
+    NET_CON::iterator net = networks.find(id);
+    
+    size_t links_count = 0;
+    
+    NET_DATA::const_iterator node = net->second.first.begin();
+    
+    while (node != net->second.first.end())
+    {
+        links_count += (*node++).second.first.size();
+    }
+    
+    if (debug) cerr << "\tGiven network has " << links_count << " links" << endl;
+    
+    return links_count;
+}
+
+
 //Złożoność: O(log N + log m)
 void network_add_node(unsigned long id, const char* label)
 {
@@ -420,28 +446,3 @@ void network_remove_link(unsigned long id, const char* slabel, const char* tlabe
     if (debug) cerr << "\tLink erased." << endl;
 }
 
-
-size_t network_links_number(unsigned long id)
-{
-    if (debug) cerr << "network_links_number(" << id << "):" << endl;
-    if (!exists(networks, id))
-    {
-        if (debug) cerr << "\tNo network with given id found. Returning 0.\n";
-        return 0;
-    }
-    
-    NET_CON::iterator net = networks.find(id);
-    
-    size_t links_count = 0;
-    
-    NET_DATA::const_iterator node = net->second.first.begin();
-    
-    while (node != net->second.first.end())
-    {
-        links_count += (*node++).second.first.size();
-    }
-    
-    if (debug) cerr << "\tGiven network has " << links_count << " links" << endl;
-    
-    return links_count;
-}
