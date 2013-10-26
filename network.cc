@@ -355,7 +355,20 @@ void network_remove_node(unsigned long id, const char* label)
         if (debug) cerr <<"\tNo such node in this network, returning." << endl;
         return;
     }
+
+    NET_DATA::iterator node = net->second.first.find(label);
+    set<NODE>::iterator it;
+
+    for (it = node->second.first.begin(); it != node->second.first.end(); it++)
+    {
+    	net->second.first.find(*it)->second.second.erase(label);
+    }
     
+    for (it = node->second.second.begin(); it != node->second.second.end(); it++)
+    {
+    	net->second.first.find(*it)->second.first.erase(label);
+    }
+
     net->second.first.erase(net->second.first.find(label));
 }
 
