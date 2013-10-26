@@ -460,23 +460,25 @@ void network_clear(unsigned long id)
 size_t network_out_degree(unsigned long id, const char* label)
 {
     if (debug) cerr << "network_out_degree(" << id << ", " << label << "):" << endl;
+
+    if (!label)
+    {
+        if (debug) cerr << "\tLabel is null. Returning 0.\n";
+        return 0;
+    }
     
-    //Gdy nie znaleziono sieci o tym kluczu, to zwracamy 0
     if (!exists(networks, id))
     {
         if (debug) cerr << "\tno network with given id found, returning 0" << endl;
         return 0;
     }
-    
-    //Net - iterator na naszą sieć (typu NETWORK)
     NET_CON::iterator net = networks.find(id);      //O(log N)
     
     if (!contains_node(net->second.first, label))
     {
         if (debug) cerr << "\tno node with this label found, returning 0" << endl;
         return 0;
-    }
-    
+    }    
     NET_DATA::iterator node = net->second.first.find(label);
     
     if (debug) cerr << "\t" << node->second.second.size() << " outgoing edges have been found" << endl;
@@ -494,27 +496,29 @@ size_t network_out_degree(unsigned long id, const char* label)
  */
 size_t network_in_degree(unsigned long id, const char* label)
 {
-    if (debug) cerr << "network_in_degree(" << id << "):" << endl;
-        
-    //Gdy nie znaleziono sieci o tym kluczu, to zwracamy 0
+    if (debug) cerr << "network_out_degree(" << id << ", " << label << "):" << endl;
+
+    if (!label)
+    {
+        if (debug) cerr << "\tLabel is null. Returning 0.\n";
+        return 0;
+    }
+    
     if (!exists(networks, id))
     {
         if (debug) cerr << "\tno network with given id found, returning 0" << endl;
         return 0;
     }
-    
-    //Net - iterator na naszą sieć (typu NETWORK)
     NET_CON::iterator net = networks.find(id);      //O(log N)
     
     if (!contains_node(net->second.first, label))
     {
         if (debug) cerr << "\tno node with this label found, returning 0" << endl;
         return 0;
-    }
-    
+    }    
     NET_DATA::iterator node = net->second.first.find(label);
     
-    if (debug) cerr << "\t" << node->second.first.size() << " incoming edges have been found" << endl;
+    if (debug) cerr << "\t" << node->second.first.size() << " outgoing edges have been found" << endl;
     
     return node->second.first.size();
 }
