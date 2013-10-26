@@ -207,14 +207,7 @@ void network_add_node(unsigned long id, const char* label)
 {
     if (debug) cerr << "network_add_node(" << id << ", " << label << "):" << endl;    
     
-    //If no such network exists, do nothing
-    if (!exists(networks, id))
-    {
-        if (debug) cerr << "\tno network with given id found" << endl;
-        return;
-    }
-    NET_CON::iterator net = networks.find(id);
-    
+    //This check is the fastest, so goes at the very beginning
     //If label is NULL, do nothing
     if (label == NULL)
     {
@@ -222,14 +215,21 @@ void network_add_node(unsigned long id, const char* label)
     	return;
     }
     
-    NET_DATA::iterator node = net->second.first.find(label);    //O(log m)
-    
+    //If no such network exists, do nothing
+    if (!exists(networks, id))
+    {
+        if (debug) cerr << "\tno network with given id found" << endl;
+        return;
+    }
+    NET_CON::iterator net = networks.find(id);
+        
     //If node "label" exists, do nothing
     if (contains_node(net->second.first, label))
     {
         if (debug) cerr << "\tnode with given label already exists in given network, returning" << endl;
         return;
     }
+    NET_DATA::iterator node = net->second.first.find(label);
     
     //Add the node
     net->second.first.insert(make_pair(label, NODE_VAL()));
