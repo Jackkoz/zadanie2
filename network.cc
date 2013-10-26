@@ -1,23 +1,16 @@
 /*
- * Założenia ogólne:
- * -> sieć: mapa [ wierzchołek -> ( { krawędzie wchodzące }, { krawędzie wychodzące } ) ]
- * -> id sieci = klucz w mapie networks
- * -> id jest generowany w ten sposób, że gdy
- *      nie ma w pamięci żadnej sieci, to id = 0, a w przeciwnym
- *      razie nowe id = największe dotychczasowe id + 1
+ * General premises:
+ * -> network: map [ node -> ( { incoming links }, { outgoing links } ) ]
+ * -> network id = key in map networks
+ * -> id is generated following this scheme:
+ *		if there are no networks in memory, then id = 0, else
+ *		new id = currently highest id + 1
  * 
  * 
- * Konwencje formatowania kodu:
- * -> klamrę otwierającą zawsze piszemy w nowej linii
- * -> między ciałami funkcji dwie linie przerwy
- * -> wcięcia to (dla wygody) roboczo taby, natomiast przed oddaniem
- *      pracy przekonwertujemy je na spacje
- * 
- * 
- * Nomenklatura na potrzeby określania złożoności:
- * -> N - liczba sieci w pamięci
- * -> n - liczba wierzchołków w danej sieci
- * -> m - liczba krawędzi w danej sieci
+ * Nomenclature used in describing complexity:
+ * -> N - the number of networks in memory
+ * -> n - the number of nodes in given network
+ * -> m - the number of links in given network
  * 
  */
 
@@ -34,7 +27,7 @@ using namespace std;
 #endif
 const int debug = DEBUG_LEVEL;
 
-/*** DEKLARACJE TYPÓW *************************************************/
+/*** TYPE DECLARATIONS *************************************************/
 typedef string NODE;
 //First set holds incoming edges, second set holds outgoing edges
 typedef pair<set<NODE>,set<NODE> > NODE_VAL;
@@ -45,6 +38,7 @@ typedef map<unsigned long,NET> NET_CON;
 
 
 /*** FUNKCJA OBUDOWUJĄCA ZMIENNĄ networks *****************************/
+/*** FUNCTION ENCASING VARIABLE networks ******************************/
 NET_CON& networks()
 {
     static NET_CON networks;
@@ -54,6 +48,7 @@ NET_CON& networks()
 
 
 /*** DEKLARACJE FUNKCJI POMOCNICZYCH **********************************/
+/*** DECLARATIONS OF SUPPORTING FUNCTIONS *****************************/
 inline bool exists(const NET_CON& networks, const unsigned long id);
 inline bool is_growing(const NET_CON::iterator& net);
 inline bool contains_node(const NET_DATA& net_data, const char* label);
@@ -61,7 +56,7 @@ inline bool contains_link(const NET_DATA& net_data, const char* slabel, const ch
 /**********************************************************************/
 
 
-/*** KOMUNIKATY *******************************************************/
+/*** MESSAGES *********************************************************/
 const char CE_NETWORK_NOT_FOUND[] = "Network not found.";
 const char CE_NODE_NOT_FOUND[] = "Node not found.";
 const char CE_LINK_NOT_FOUND[] = "Link not found.";
@@ -71,7 +66,7 @@ const char CE_FATAL[] = "Fatal error encountered. Returning neutral value or voi
 /**********************************************************************/
 
 
-/*** IMPLEMENTACJE FUNKCJI POMOCNICZYCH *******************************/
+/*** IMPLEMENTATIONS OF SUPPORTING FUNCTIONS **************************/
 inline bool exists(const NET_CON& networks, const unsigned long id)
 {
     NET_CON::const_iterator net = networks.find(id);
