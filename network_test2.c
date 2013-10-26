@@ -5,11 +5,10 @@
 
 int main()
 {
-    unsigned long n, x, y;
+    unsigned long n, x;
 
     n = network_new(0);
     x = network_new(1);
-    y = network_new(2);
     
     int i = 1;
 
@@ -86,6 +85,18 @@ int main()
         assert(network_links_number(x) == 2);
     }
     printf(">>>>>assert %d passed\n\n", i++);
+
+    for (char c = 'a'; c <= 'd'; c++)
+    {
+        //printf("%c\n", c); Wypisuje poprawnie alfabet
+        char temp[1] = {c};
+        network_add_node(x, temp);
+    }
+
+    printf("%d\n", network_nodes_number(x));
+
+    assert(network_nodes_number(x) == 26);
+    assert(network_links_number(x) == 2);
     
 
     printf("*****\nALL ASSERTIONS PASSED\n*****\n\n");
