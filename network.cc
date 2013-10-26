@@ -112,7 +112,13 @@ unsigned long network_new(int growing)
 }
 
 
-//Złożoność: O(log N)
+/*
+ * If network "id" exists, remove it, otherwise
+ * do nothing.
+ * 
+ * Complexity: O(log N)
+ * 
+ */
 void network_delete(unsigned long id)
 {
     if (debug) cerr << "network_delete(" << id << "):" << endl;
