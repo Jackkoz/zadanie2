@@ -102,6 +102,8 @@ inline bool contains_link(const NET_DATA& net_data, const char* slabel, const ch
  */
 unsigned long network_new(int growing)
 {
+	static ios_base::Init _;
+	
     if (debug) cerr << "network_new(" << growing << "):" << endl;
     
     unsigned long new_id = -1;
