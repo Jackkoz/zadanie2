@@ -30,10 +30,10 @@ const int debug = DEBUG_LEVEL;
 /*** TYPE DECLARATIONS *************************************************/
 typedef string NODE;
 //First set holds incoming edges, second set holds outgoing edges
-typedef pair<set<NODE>,set<NODE> > NODE_VAL;
-typedef map<NODE,NODE_VAL> NET_DATA;
-typedef pair<NET_DATA,bool> NET;
-typedef map<unsigned long,NET> NET_CON;
+typedef pair<set<NODE>, set<NODE> > NODE_VAL;
+typedef map<NODE, NODE_VAL> NET_DATA;
+typedef pair<NET_DATA, bool> NET;
+typedef map<unsigned long, NET> NET_CON;
 /**********************************************************************/
 
 
