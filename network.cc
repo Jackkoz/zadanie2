@@ -197,7 +197,8 @@ size_t network_links_number(unsigned long id)
     
     while (node != net->second.first.end())
     {
-        links_count += (*node++).second.first.size();
+        links_count += node->second.first.size();
+        node++;
     }
     
     if (debug) cerr << "\tGiven network has " << links_count << " links." << endl;
