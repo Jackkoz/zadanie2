@@ -1,5 +1,5 @@
 /*
- * General premises:
+ * General assumptions:
  * -> network: map [ node -> ( { incoming links }, { outgoing links } ) ]
  * -> network id = key in map networks
  * -> id is generated following this scheme:
@@ -37,8 +37,7 @@ typedef map<unsigned long,NET> NET_CON;
 /**********************************************************************/
 
 
-/*** FUNKCJA OBUDOWUJĄCA ZMIENNĄ networks *****************************/
-/*** FUNCTION ENCASING VARIABLE networks ******************************/
+/*** FUNCTION PROVIDING GLOBAL NETWORK CONTAINER **********************/
 NET_CON& networks()
 {
     static NET_CON networks;
@@ -47,8 +46,7 @@ NET_CON& networks()
 /**********************************************************************/
 
 
-/*** DEKLARACJE FUNKCJI POMOCNICZYCH **********************************/
-/*** DECLARATIONS OF SUPPORTING FUNCTIONS *****************************/
+/*** DECLARATIONS OF HELPER FUNCTIONS *********************************/
 inline bool exists(const NET_CON& networks, const unsigned long id);
 inline bool is_growing(const NET_CON::iterator& net);
 inline bool contains_node(const NET_DATA& net_data, const char* label);
@@ -56,7 +54,7 @@ inline bool contains_link(const NET_DATA& net_data, const char* slabel, const ch
 /**********************************************************************/
 
 
-/*** MESSAGES *********************************************************/
+/*** DEBUG MESSEGES ***************************************************/
 const char CE_NETWORK_NOT_FOUND[] = "Network not found.";
 const char CE_NODE_NOT_FOUND[] = "Node not found.";
 const char CE_LINK_NOT_FOUND[] = "Link not found.";
@@ -66,11 +64,10 @@ const char CE_FATAL[] = "Fatal error encountered. Returning neutral value or voi
 /**********************************************************************/
 
 
-/*** IMPLEMENTATIONS OF SUPPORTING FUNCTIONS **************************/
+/*** IMPLEMENTATIONS OF HELPER FUNCTIONS ******************************/
 inline bool exists(const NET_CON& networks, const unsigned long id)
 {
-    NET_CON::const_iterator net = networks.find(id);
-    return net != networks.end();
+    return networks.count(id);
 }
 
 
@@ -104,6 +101,8 @@ inline bool contains_link(const NET_DATA& net_data, const char* slabel, const ch
  */
 unsigned long network_new(int growing)
 {
+	static ios_base::Init _;
+	
     if (debug) cerr << "network_new(" << growing << "):" << endl;
     
     unsigned long new_id = -1;
