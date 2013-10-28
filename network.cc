@@ -67,8 +67,7 @@ const char CE_FATAL[] = "Fatal error encountered. Returning neutral value or voi
 /*** IMPLEMENTATIONS OF HELPER FUNCTIONS ******************************/
 inline bool exists(const NET_CON& networks, const unsigned long id)
 {
-    NET_CON::const_iterator net = networks.find(id);
-    return net != networks.end();
+    return networks.count(id);
 }
 
 
