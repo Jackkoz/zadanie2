@@ -149,7 +149,7 @@ void network_delete(unsigned long id)
     NET_CONTAINER::iterator net = networks().find(id);
     
     //*** Actual code **************************************************
-    int n = networks().erase(id);    
+    size_t n = networks().erase(id);    
     if (debug) cerr << '\t' << n << " networks have been deleted." << endl;
 }
 
