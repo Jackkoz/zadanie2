@@ -1,7 +1,7 @@
 #ifndef _NETWORK_H
 #define _NETWORK_H
 
-#include <stdlib.h>
+#include <stddef.h>
 
 #ifdef __cplusplus
 extern "C" {
