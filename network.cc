@@ -28,20 +28,20 @@ using namespace std;
 static const int debug = DEBUG_LEVEL;
 
 /*** TYPE DECLARATIONS FOR THE NETWORK ********************************/
-// The type (label) held in a single node
+// The type (label) held in a single node.
 typedef string NODE;
 
-// Incoming and outgoing edges of a single node
-// First set holds incoming edges, second set holds outgoing edges
+// Incoming and outgoing edges of a single node.
+// First set holds incoming edges, second set holds outgoing edges.
 typedef pair<set<NODE>, set<NODE> > NODE_EDGES;
 
-// Type to hold nodes and its edges
+// Type to hold nodes and its edges.
 typedef map<NODE, NODE_EDGES> NET_DATA;
 
-// Entire network plus flag saying wheter it shall be growing
+// Entire network plus flag saying wheter it shall be growing.
 typedef pair<NET_DATA, bool> NET;
 
-// Container two hold multiples networks with their flags
+// Container two hold multiples networks with their flags.
 typedef map<unsigned long, NET> NET_CONTAINER;
 /**********************************************************************/
 
