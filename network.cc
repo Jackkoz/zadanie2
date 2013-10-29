@@ -7,7 +7,7 @@
  *      new id = currently highest id + 1
  * 
  * 
- * Nomenclature used in describing complexity:
+ * Letters used to describe complexity:
  * -> N - the number of networks in memory
  * -> n - the number of nodes in given network
  * -> m - the number of links in given network
