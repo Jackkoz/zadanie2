@@ -64,12 +64,12 @@ inline bool contains_link(const NET_DATA& net_data, const char* slabel, const ch
 
 
 /*** DEBUG MESSEGES ***************************************************/
-const char CE_NETWORK_NOT_FOUND[] = "Network not found.";
-const char CE_NODE_NOT_FOUND[] = "Node not found.";
-const char CE_LINK_NOT_FOUND[] = "Link not found.";
-const char CE_LABEL_IS_NULL[] = "Label is NULL.";
-const char CE_NETWORK_IS_GROWING[] = "Network is growing.";
-const char CE_FATAL[] = "Fatal error encountered. Returning neutral value or void.";
+static const char CE_NETWORK_NOT_FOUND[] = "Network not found.";
+static const char CE_NODE_NOT_FOUND[] = "Node not found.";
+static const char CE_LINK_NOT_FOUND[] = "Link not found.";
+static const char CE_LABEL_IS_NULL[] = "Label is NULL.";
+static const char CE_NETWORK_IS_GROWING[] = "Network is growing.";
+static const char CE_FATAL[] = "Fatal error encountered. Returning neutral value or void.";
 /**********************************************************************/
 
 
