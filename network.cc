@@ -31,12 +31,12 @@ static const int debug = DEBUG_LEVEL;
 // The type (label) held in a single node
 typedef string NODE;
 
-// Incoming and outgoing edges of a signle node
+// Incoming and outgoing edges of a single node
 // First set holds incoming edges, second set holds outgoing edges
-typedef pair<set<NODE>, set<NODE> > NODE_VAL;
+typedef pair<set<NODE>, set<NODE> > NODE_EDGES;
 
 // Type to hold nodes and its edges
-typedef map<NODE, NODE_VAL> NET_DATA;
+typedef map<NODE, NODE_EDGES> NET_DATA;
 
 // Entire network plus flag saying wheter it shall be growing
 typedef pair<NET_DATA, bool> NET;
