@@ -25,7 +25,7 @@ using namespace std;
 #ifndef DEBUG_LEVEL
     #define DEBUG_LEVEL 0
 #endif
-const int debug = DEBUG_LEVEL;
+static const int debug = DEBUG_LEVEL;
 
 /*** TYPE DECLARATIONS *************************************************/
 typedef string NODE;
