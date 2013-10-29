@@ -1,11 +1,12 @@
 #ifndef _NETWORK_H
 #define _NETWORK_H
 
-#include <stdlib.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+// This header is needed for datatype size_t
+#include <stddef.h>
 
 //Creates a new empty network and returns its id.
 //An empty network is a network with empty set of nodes.
