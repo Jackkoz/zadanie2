@@ -27,28 +27,37 @@ using namespace std;
 #endif
 static const int debug = DEBUG_LEVEL;
 
-/*** TYPE DECLARATIONS *************************************************/
+/*** TYPE DECLARATIONS FOR THE NETWORK ********************************/
+// The type (label) held in a single node
 typedef string NODE;
-//First set holds incoming edges, second set holds outgoing edges
+
+// Incoming and outgoing edges of a signle node
+// First set holds incoming edges, second set holds outgoing edges
 typedef pair<set<NODE>, set<NODE> > NODE_VAL;
+
+// Type to hold nodes and its edges
 typedef map<NODE, NODE_VAL> NET_DATA;
+
+// Entire network plus flag saying wheter it shall be growing
 typedef pair<NET_DATA, bool> NET;
-typedef map<unsigned long, NET> NET_CON;
+
+// Container two hold multiples networks with their flags
+typedef map<unsigned long, NET> NET_CONTAINER;
 /**********************************************************************/
 
 
 /*** FUNCTION PROVIDING GLOBAL NETWORK CONTAINER **********************/
-NET_CON& networks()
+NET_CONTAINER& networks()
 {
-    static NET_CON networks;
+    static NET_CONTAINER networks;
     return networks;
 }
 /**********************************************************************/
 
 
 /*** DECLARATIONS OF HELPER FUNCTIONS *********************************/
-inline bool exists(const NET_CON& networks, const unsigned long id);
-inline bool is_growing(const NET_CON::iterator& net);
+inline bool exists(const NET_CONTAINER& networks, const unsigned long id);
+inline bool is_growing(const NET_CONTAINER::iterator& net);
 inline bool contains_node(const NET_DATA& net_data, const char* label);
 inline bool contains_link(const NET_DATA& net_data, const char* slabel, const char* tlabel);
 /**********************************************************************/
@@ -65,13 +74,13 @@ const char CE_FATAL[] = "Fatal error encountered. Returning neutral value or voi
 
 
 /*** IMPLEMENTATIONS OF HELPER FUNCTIONS ******************************/
-inline bool exists(const NET_CON& networks, const unsigned long id)
+inline bool exists(const NET_CONTAINER& networks, const unsigned long id)
 {
     return networks.count(id);
 }
 
 
-inline bool is_growing(const NET_CON::iterator& net)
+inline bool is_growing(const NET_CONTAINER::iterator& net)
 {   
     return net->second.second;
 }
@@ -137,7 +146,7 @@ void network_delete(unsigned long id)
         if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
         return;
     }    
-    NET_CON::iterator net = networks().find(id);
+    NET_CONTAINER::iterator net = networks().find(id);
     
     //*** Actual code **************************************************
     int n = networks().erase(id);    
@@ -162,7 +171,7 @@ size_t network_nodes_number(unsigned long id)
         if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
         return 0;
     }    
-    NET_CON::iterator net = networks().find(id);
+    NET_CONTAINER::iterator net = networks().find(id);
         
     //*** Actual code **************************************************
     if (debug) cerr << "\tGiven network consists out of " << net->second.first.size() << " keys." << endl;
@@ -187,7 +196,7 @@ size_t network_links_number(unsigned long id)
         if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
         return 0;
     }
-    NET_CON::iterator net = networks().find(id);
+    NET_CONTAINER::iterator net = networks().find(id);
     
     //*** Actual code **************************************************
     
@@ -232,7 +241,7 @@ void network_add_node(unsigned long id, const char* label)
         if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
         return;
     }
-    NET_CON::iterator net = networks().find(id);
+    NET_CONTAINER::iterator net = networks().find(id);
         
     if (contains_node(net->second.first, label))
     {
@@ -271,7 +280,7 @@ void network_add_link(unsigned long id, const char* slabel, const char* tlabel)
         if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
         return; 
     }
-    NET_CON::iterator net = networks().find(id);
+    NET_CONTAINER::iterator net = networks().find(id);
     
     //If some of the nodes are missing, add them
     if (!contains_node(net->second.first, slabel))
@@ -333,7 +342,7 @@ void network_remove_node(unsigned long id, const char* label)
         if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
         return;
     }   
-    NET_CON::iterator net = networks().find(id);
+    NET_CONTAINER::iterator net = networks().find(id);
 
     //This check goes first, since its faster than the next one
     if (is_growing(net))
@@ -392,7 +401,7 @@ void network_remove_link(unsigned long id, const char* slabel, const char* tlabe
         if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
         return;
     }    
-    NET_CON::iterator net = networks().find(id);
+    NET_CONTAINER::iterator net = networks().find(id);
     
     if (is_growing(net))
     {
@@ -447,7 +456,7 @@ void network_clear(unsigned long id)
         if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
         return;
     }    
-    NET_CON::iterator net = networks().find(id);
+    NET_CONTAINER::iterator net = networks().find(id);
     
     if (is_growing(net))
     {
@@ -484,7 +493,7 @@ size_t network_out_degree(unsigned long id, const char* label)
         if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
         return 0;
     }
-    NET_CON::iterator net = networks().find(id);
+    NET_CONTAINER::iterator net = networks().find(id);
     
     if (!contains_node(net->second.first, label))
     {
@@ -522,7 +531,7 @@ size_t network_in_degree(unsigned long id, const char* label)
         if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
         return 0;
     }
-    NET_CON::iterator net = networks().find(id);
+    NET_CONTAINER::iterator net = networks().find(id);
     
     if (!contains_node(net->second.first, label))
     {
