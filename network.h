@@ -1,6 +1,7 @@
 #ifndef _NETWORK_H
 #define _NETWORK_H
 
+// This header is needed for datatype size_t
 #include <stddef.h>
 
 #ifdef __cplusplus
