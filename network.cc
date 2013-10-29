@@ -112,17 +112,28 @@ unsigned long network_new(int growing)
 {
     static ios_base::Init _;
     
-    if (debug) cerr << "network_new(" << growing << "):" << endl;
+    if (debug)
+    {
+        cerr << "network_new(" << growing << "):" << endl;
+    }
     
-    unsigned long new_id = -1;
+    unsigned long new_id;
     
-    if (networks().size() == 0) new_id = 0;
+    if (networks().size() == 0)
+    {
+        new_id = 0;
+    }
+    else
+    {
+        //Take the last existing element and add 1 to its id.
+        new_id = networks().rbegin()->first + 1;
+    }
     
-    //Take the last existing element and add 1 to its index.
-    else new_id = networks().rbegin()->first + 1;
-    
-    if (debug) cerr << "\tnetworks.size() == " << networks().size()
-                    << ", new_id = " << new_id << endl;
+    if (debug)
+    {
+        cerr << "\tnetworks.size() == " << networks().size()
+            << ", new_id = " << new_id << endl;
+    }
     
     networks().insert(make_pair(new_id, make_pair(NET_DATA(), growing)));
     
@@ -139,20 +150,24 @@ unsigned long network_new(int growing)
  */
 void network_delete(unsigned long id)
 {
-    if (debug) cerr << "network_delete(" << id << "):" << endl;
-
-    //*** Pre-checks ***************************************************
-    if (!exists(networks(), id))
+    if (debug)
     {
-        if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND
-                        << ' ' << CE_FATAL << endl;
-        return;
-    }    
+        cerr << "network_delete(" << id << "):" << endl;
+    }
+
     NET_CONTAINER::iterator net = networks().find(id);
+    if (net == networks().end())
+    {
+        if (debug)
+        {
+            cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
+        }
+        return;
+    }
     
-    //*** Actual code **************************************************
+    // erase(id) returns number of keys removed from map
     size_t n = networks().erase(id);    
-    if (debug) cerr << '\t' << n << " networks have been deleted." << endl;
+    if (debug) cerr << "\tNumber of deleted networks: " << n << '.' << endl;
 }
 
 
@@ -165,20 +180,26 @@ void network_delete(unsigned long id)
  */
 size_t network_nodes_number(unsigned long id)
 {
-    if (debug) cerr << "network_nodes_number(" << id << "):" << endl;
-    
-    //*** Pre-checks ***************************************************
-    if (!exists(networks(), id))
+    if (debug)
     {
-        if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND
-                        << ' ' << CE_FATAL << endl;
-        return 0;
-    }    
+        cerr << "network_nodes_number(" << id << "):" << endl;
+    }
+    
     NET_CONTAINER::iterator net = networks().find(id);
+    if (net == networks().end())
+    {
+        if (debug)
+        {
+            cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
+        }
+        return 0;
+    }
         
-    //*** Actual code **************************************************
-    if (debug) cerr << "\tGiven network consists out of "
-                    << net->second.first.size() << " keys." << endl;
+    if (debug)
+    {
+        cerr << "\tGiven network consists out of "
+                << net->second.first.size() << " keys." << endl;
+    }
     return net->second.first.size();
 }
 
@@ -192,18 +213,21 @@ size_t network_nodes_number(unsigned long id)
  */
 size_t network_links_number(unsigned long id)
 {
-    if (debug) cerr << "network_links_number(" << id << "):" << endl;
-    
-    //*** Pre-checks ***************************************************
-    if (!exists(networks(), id))
+    if (debug)
     {
-        if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND
-                        << ' ' << CE_FATAL << endl;
+        cerr << "network_links_number(" << id << "):" << endl;
+    }
+    
+    NET_CONTAINER::iterator net = networks().find(id);
+    if (net == networks().end())
+    {
+        if (debug)
+        {
+            cerr << '\t' << CE_NETWORK_NOT_FOUND
+                << ' ' << CE_FATAL << endl;
+        }
         return 0;
     }
-    NET_CONTAINER::iterator net = networks().find(id);
-    
-    //*** Actual code **************************************************
     
     size_t links_count = 0;
     
@@ -215,7 +239,10 @@ size_t network_links_number(unsigned long id)
         node++;
     }
     
-    if (debug) cerr << "\tGiven network has " << links_count << " links." << endl;
+    if (debug)
+    {
+        cerr << "\tGiven network contains " << links_count << " links." << endl;
+    }
     
     return links_count;
 }
@@ -231,35 +258,47 @@ size_t network_links_number(unsigned long id)
  */
 void network_add_node(unsigned long id, const char* label)
 {
-    if (debug) cerr << "network_add_node(" << id << ", " << label << "):" << endl;    
+    if (debug)
+    {
+        cerr << "network_add_node(" << id << ", " << label << "):" << endl;    
+    }
     
-    //*** Pre-checks ***************************************************
-    //This check is the fastest, so goes at the very beginning
+    // This check is the fastest, so goes at the very beginning
     if (!label)
     {
-        if (debug) cerr << '\t' << CE_LABEL_IS_NULL
-                        << ' ' << CE_FATAL << endl; 
+        if (debug)
+        {
+            cerr << '\t' << CE_LABEL_IS_NULL << ' ' << CE_FATAL << endl; 
+        }
         return;
     }
     
-    if (!exists(networks(), id))
+    NET_CONTAINER::iterator net = networks().find(id);
+    if (net == networks().end())
     {
-        if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND
-                        << ' ' << CE_FATAL << endl;
+        if (debug)
+        {
+            cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
+        }
         return;
     }
-    NET_CONTAINER::iterator net = networks().find(id);
         
     if (contains_node(net->second.first, label))
     {
-        if (debug) cerr << "\tNode with given label already exists in given network."
-                        << ' ' << CE_FATAL << endl;
+        if (debug)
+        {
+            cerr << "\tNode with given label already exists in given network."
+                << ' ' << CE_FATAL << endl;
+        }
         return;
     }
     
-    //*** Actual code **************************************************
+    // Insert the node
     net->second.first.insert(make_pair(label, NODE_EDGES()));
-    if (debug) cerr << "\tNode with given label has been added to given network." << endl;
+    if (debug)
+    {
+        cerr << "\tNode with given label has been added to given network." << endl;
+    }
 }
 
 
@@ -274,33 +313,45 @@ void network_add_node(unsigned long id, const char* label)
  */
 void network_add_link(unsigned long id, const char* slabel, const char* tlabel)
 {
-    if (debug) cerr << "network_add_link(" << id << ", " << slabel << ", " << tlabel << "):" << endl;
+    if (debug)
+    {
+        cerr << "network_add_link(" << id << ", " << slabel << ", " << tlabel << "):" << endl;
+    }
 
-    //*** Pre-checks ***************************************************
     if (!(slabel && tlabel))
     {
-        if (debug) cerr << '\t' << CE_LABEL_IS_NULL
-                        << ' ' << CE_FATAL << endl; 
+        if (debug)
+        {
+            cerr << '\t' << CE_LABEL_IS_NULL << ' ' << CE_FATAL << endl;
+        }
         return; 
     } 
 
-    if (!exists(networks(), id))
-    {
-        if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND
-                        << ' ' << CE_FATAL << endl;
-        return; 
-    }
     NET_CONTAINER::iterator net = networks().find(id);
+    if (net == networks().end())
+    {
+        if (debug)
+        {
+            cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
+        }
+        return; 
+    }    
     
     //If some of the nodes are missing, add them
     if (!contains_node(net->second.first, slabel))
     {
-        if (debug) cerr << "\tSource node does not exist, adding." << endl;
+        if (debug)
+        {
+            cerr << "\tSource node does not exist, adding." << endl;
+        }
         network_add_node(id, slabel);
     }
     if (!contains_node(net->second.first, tlabel))
     {
-        if (debug) cerr << "\tTarget node does not exist, adding." << endl;
+        if (debug)
+        {
+            cerr << "\tTarget node does not exist, adding." << endl;
+        }
         network_add_node(id, tlabel);
     }
     
@@ -309,22 +360,29 @@ void network_add_link(unsigned long id, const char* slabel, const char* tlabel)
     // it HAS to be run after the two previous contains_node functions!
     if (contains_link(net->second.first, slabel, tlabel))
     {
-        if (debug) cerr << "\tGiven link already exists."
-                        << ' ' << CE_FATAL << endl;
+        if (debug)
+        {
+            cerr << "\tGiven link already exists." << ' ' << CE_FATAL << endl;
+        }
         return;
     }
     
+    // Source node
     NET_DATA::iterator snode = net->second.first.find(slabel);
-    NET_DATA::iterator tnode = net->second.first.find(tlabel);
     assert(snode != net->second.first.end());
+    
+    // Target node
+    NET_DATA::iterator tnode = net->second.first.find(tlabel);
     assert(tnode != net->second.first.end());
     
-    //*** Actual code **************************************************
-    //Add the actual link
+    // Add the actual link (inform both source and target node)
     snode->second.second.insert(tlabel);
     tnode->second.first.insert(slabel);
     
-    if (debug) cerr << "\tLink added." << endl;
+    if (debug)
+    {
+        cerr << "\tLink added." << endl;
+    }
 }
 
 
@@ -339,24 +397,27 @@ void network_add_link(unsigned long id, const char* slabel, const char* tlabel)
  */
 void network_remove_node(unsigned long id, const char* label)
 {
-    if (debug) cerr << "network_remove_node(" << id
-                    << ", " << label << "):" << endl;
+    if (debug)
+    {
+        cerr << "network_remove_node(" << id << ", " << label << "):" << endl;
+    }
 
-    //*** Pre-checks ***************************************************
     if (!label)
     {
-        if (debug) cerr << '\t' << CE_LABEL_IS_NULL
-                        << ' ' << CE_FATAL << endl; 
+        if (debug)
+        {
+            cerr << '\t' << CE_LABEL_IS_NULL << ' ' << CE_FATAL << endl;
+        }
         return;
     }
     
-    if (!exists(networks(), id))
+    NET_CONTAINER::iterator net = networks().find(id);
+    if (net == networks().end())
     {
         if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND
                         << ' ' << CE_FATAL << endl;
         return;
     }   
-    NET_CONTAINER::iterator net = networks().find(id);
 
     //This check goes first, since its faster than the next one
     if (is_growing(net))
@@ -366,39 +427,41 @@ void network_remove_node(unsigned long id, const char* label)
         return;
     }
     
-    if (!contains_node(net->second.first, label))
+    NET_DATA::iterator node = net->second.first.find(label);
+    if (node == net->second.first.end())
     {
         if (debug) cerr << '\t' << CE_NODE_NOT_FOUND
                         << ' ' << CE_FATAL << endl;
         return;
     }
-    NET_DATA::iterator node = net->second.first.find(label);
     
-    //Take care of the links coming into the node
+    // Take care of the links coming into the node
     for (
             set<NODE>::iterator source_node = node->second.first.begin();
             source_node != node->second.first.end();
             ++source_node
         )
     {
-        //Get the node our link comes from, and remove the info about it from that node
+        // Get the node our link comes from, and remove the info about it from that node
         net->second.first.find(*source_node)->second.second.erase(label);
     }
     
-    //Take care of the links going out of the node
+    // Take care of the links going out of the node
     for (
             set<NODE>::iterator target_node = node->second.second.begin();
             target_node != node->second.second.end();
             ++target_node
         )
     {
-        //Find the node our link goes to, and remove the info about it from that node
+        // Find the node our link goes to, and remove the info about it from that node
         net->second.first.find(*target_node)->second.first.erase(label);
     }
 
-    //*** Actual code **************************************************
     net->second.first.erase(net->second.first.find(label));
-    if (debug) cerr << "\tNode has been removed." << endl;
+    if (debug)
+    {
+        cerr << "\tNode has been removed." << endl;
+    }
 }
 
 
@@ -411,10 +474,12 @@ void network_remove_node(unsigned long id, const char* label)
  */
 void network_remove_link(unsigned long id, const char* slabel, const char* tlabel)
 {
-    if (debug) cerr << "network_remove_link(" << id << ", " << slabel
-                    << ", " << tlabel << "):" << endl;
+    if (debug)
+    {
+        cerr << "network_remove_link(" << id << ", " << slabel
+            << ", " << tlabel << "):" << endl;
+    }
 
-    //*** Pre-checks ***************************************************
     if (!(slabel && tlabel))
     {
         if (debug) cerr << '\t' << CE_LABEL_IS_NULL
@@ -422,31 +487,39 @@ void network_remove_link(unsigned long id, const char* slabel, const char* tlabe
         return; 
     } 
     
-    if (!exists(networks(), id))
-    {
-        if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND
-                        << ' ' << CE_FATAL << endl;
-        return;
-    }    
     NET_CONTAINER::iterator net = networks().find(id);
+    if (net == networks().end())
+    {
+        if (debug)
+        {
+            cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
+        }
+        return;
+    }
     
     if (is_growing(net))
     {
-        if (debug) cerr << '\t' << CE_NETWORK_IS_GROWING
-                        << ' ' << CE_FATAL << endl;
+        if (debug)
+        {
+            cerr << '\t' << CE_NETWORK_IS_GROWING << ' ' << CE_FATAL << endl;
+        }
         return;
     }
     
     if (!contains_node(net->second.first, slabel))
     {
-        if (debug) cerr << '\t' << CE_NODE_NOT_FOUND
-                        << ' ' << CE_FATAL << endl;
+        if (debug)
+        {
+            cerr << '\t' << CE_NODE_NOT_FOUND << ' ' << CE_FATAL << endl;
+        }
         return;
     }
     if (!contains_node(net->second.first, tlabel))
     {
-        if (debug) cerr << '\t' << CE_NODE_NOT_FOUND
-                        << ' ' << CE_FATAL << endl;
+        if (debug)
+        {
+            cerr << '\t' << CE_NODE_NOT_FOUND << ' ' << CE_FATAL << endl;
+        }
         return;
     }
         
@@ -454,8 +527,10 @@ void network_remove_link(unsigned long id, const char* slabel, const char* tlabe
     //it HAS to be run after the two previous contains_node functions!
     if (!contains_link(net->second.first, slabel, tlabel))
     {
-        if (debug) cerr << '\t' << CE_LINK_NOT_FOUND
-                        << ' ' << CE_FATAL << endl;
+        if (debug)
+        {
+            cerr << '\t' << CE_LINK_NOT_FOUND << ' ' << CE_FATAL << endl;
+        }
         return;
     }
     
@@ -463,10 +538,12 @@ void network_remove_link(unsigned long id, const char* slabel, const char* tlabe
     NET_DATA::iterator tnode = net->second.first.find(tlabel);
     assert(snode != net->second.first.end() && tnode != net->second.first.end());
     
-    //*** Actual code **************************************************
     snode->second.second.erase(tlabel);
     tnode->second.first.erase(slabel);
-    if (debug) cerr << "\tLink erased." << endl;
+    if (debug)
+    {
+        cerr << "\tLink erased." << endl;
+    }
 }
 
 
@@ -481,25 +558,30 @@ void network_clear(unsigned long id)
 {
     if (debug) cerr << "network_clear(" << id << "):" << endl;
         
-    //*** Pre-checks ***************************************************
-    if (!exists(networks(), id))
-    {
-        if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND
-                        << ' ' << CE_FATAL << endl;
-        return;
-    }    
     NET_CONTAINER::iterator net = networks().find(id);
+    if (net == networks().end())
+    {
+        if (debug)
+        {
+            cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
+        }
+        return;
+    }        
     
     if (is_growing(net))
     {
-        if (debug) cerr << '\t' << CE_NETWORK_IS_GROWING
-                        << ' ' << CE_FATAL << endl;
+        if (debug)
+        {
+            cerr << '\t' << CE_NETWORK_IS_GROWING << ' ' << CE_FATAL << endl;
+        }
         return;
     }
         
-    //*** Actual code **************************************************
     net->second.first.clear();
-    if (debug) cerr << "\tNetwork has been cleared." << endl;
+    if (debug)
+    {
+        cerr << "\tNetwork has been cleared." << endl;
+    }
 }
 
 
@@ -512,10 +594,11 @@ void network_clear(unsigned long id)
  */
 size_t network_out_degree(unsigned long id, const char* label)
 {
-    if (debug) cerr << "network_out_degree(" << id
-                    << ", " << label << "):" << endl;
+    if (debug)
+    {
+        cerr << "network_out_degree(" << id << ", " << label << "):" << endl;
+    }
 
-    //*** Pre-checks ***************************************************
     if (!label)
     {
         if (debug) cerr << '\t' << CE_LABEL_IS_NULL
@@ -523,25 +606,26 @@ size_t network_out_degree(unsigned long id, const char* label)
         return 0;
     }
     
-    if (!exists(networks(), id))
+    NET_CONTAINER::iterator net = networks().find(id);
+    if (net == networks().end())
     {
         if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND
                         << ' ' << CE_FATAL << endl;
         return 0;
     }
-    NET_CONTAINER::iterator net = networks().find(id);
     
-    if (!contains_node(net->second.first, label))
+    NET_DATA::iterator node = net->second.first.find(label);
+    if (node == networks().end())    
     {
         if (debug) cerr << '\t' << CE_NODE_NOT_FOUND
                         << ' ' << CE_FATAL << endl;
         return 0;
     }    
-    NET_DATA::iterator node = net->second.first.find(label);
     
-    //*** Actual code **************************************************
-    if (debug) cerr << "\t" << node->second.second.size()
-                    << " outgoing edges have been found." << endl;
+    if (debug)
+    {
+        cerr << "\t" << node->second.second.size() << " outgoing edges have been found." << endl;
+    }
     return node->second.second.size();
 }
 
@@ -558,7 +642,6 @@ size_t network_in_degree(unsigned long id, const char* label)
     if (debug) cerr << "network_out_degree(" << id
                     << ", " << label << "):" << endl;
 
-    //*** Pre-checks ***************************************************
     if (!label)
     {
         if (debug) cerr << '\t' << CE_LABEL_IS_NULL
@@ -566,25 +649,27 @@ size_t network_in_degree(unsigned long id, const char* label)
         return 0;
     }
     
-    if (!exists(networks(), id))
+    NET_CONTAINER::iterator net = networks().find(id);
+    if (net == networks().end())
     {
         if (debug) cerr << '\t' << CE_NETWORK_NOT_FOUND
                         << ' ' << CE_FATAL << endl;
         return 0;
     }
-    NET_CONTAINER::iterator net = networks().find(id);
     
-    if (!contains_node(net->second.first, label))
+    NET_DATA::iterator node = net->second.first.find(label);
+    if (node == net->second.first.end())
     {
         if (debug) cerr << '\t' << CE_NODE_NOT_FOUND
                         << ' ' << CE_FATAL << endl;
         return 0;
     }    
-    NET_DATA::iterator node = net->second.first.find(label);
         
-    //*** Actual code **************************************************
-    if (debug) cerr << "\t" << node->second.first.size()
-                    << " outgoing edges have been found." << endl;
+    if (debug)
+    {
+        cerr << "\t" << node->second.first.size()
+            << " outgoing edges have been found." << endl;
+    }
     return node->second.first.size();
 }
     
