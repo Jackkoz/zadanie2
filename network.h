@@ -6,7 +6,7 @@
 // to be usable with programs written in C.
 #ifdef __cplusplus
 extern "C" {
-#endif	// #ifdef __cplusplus
+#endif  // #ifdef __cplusplus
 
 
 // Following header is needed for datatype `size_t`.
@@ -111,6 +111,6 @@ size_t network_in_degree(unsigned long id, const char* label);
 
 #ifdef __cplusplus
 }
-#endif	// #ifdef __cplusplus
+#endif  // #ifdef __cplusplus
 
-#endif	// #ifndef _NETWORK_H
+#endif  // #ifndef _NETWORK_H
