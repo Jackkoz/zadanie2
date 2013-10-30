@@ -148,7 +148,7 @@ unsigned long network_new(int growing)
 
     if (debug())
     {
-        cerr << "\tCreating a " << (growing ? "growing" : "non-growing")
+        cerr << "\tCreated a " << (growing ? "growing" : "non-growing")
                 << " network with id=" << new_id << '.' << endl;
         cerr << "\tCurrently a total of " << networks().size()
                 << " networks in memory." << endl;
