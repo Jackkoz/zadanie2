@@ -142,6 +142,8 @@ unsigned long network_new(int growing)
         new_id = networks().rbegin()->first + 1;
     }
     
+    assert(!networks().count(new_id));
+    
     networks()[new_id] = make_pair(NODE_MAP(), growing);
 
     if (debug())
