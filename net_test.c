@@ -1,4 +1,4 @@
-//#include "growingnet.h"
+#include "growingnet.h"
 #include "network.h"
 
 #include <stdio.h>
@@ -326,6 +326,60 @@ int main()
         assert(network_out_degree(id1, "Node #22") == 0);
         assert(network_in_degree(id1, "Node #33") == 0);
     }
+    
+    
+    
+    
+    network_add_node(growingnet, "Node #0");
+    assert(network_nodes_number(growingnet) == 1);
+    assert(network_links_number(growingnet) == 0);
+    network_add_link(growingnet, "Node #22", "Node #0");
+    network_add_link(growingnet, "Node #22", "Node #33");
+    assert(network_nodes_number(growingnet) == 3);
+    assert(network_links_number(growingnet) == 2);
+    assert(network_in_degree(growingnet, "Node #0") == 1);
+    assert(network_out_degree(growingnet, "Node #0") == 0);
+    assert(network_in_degree(growingnet, "Node #22") == 0);
+    assert(network_out_degree(growingnet, "Node #22") == 2);
+    assert(network_in_degree(growingnet, "Node #33") == 1);
+    network_clear(growingnet);
+    assert(network_nodes_number(growingnet) == 3);
+    assert(network_links_number(growingnet) == 2);
+    assert(network_in_degree(growingnet, "Node #0") == 1);
+    assert(network_out_degree(growingnet, "Node #0") == 0);
+    assert(network_in_degree(growingnet, "Node #22") == 0);
+    assert(network_out_degree(growingnet, "Node #22") == 2);
+    assert(network_in_degree(growingnet, "Node #33") == 1);
+    
+    network_add_node(growingnet, "Node #0");
+    network_add_link(growingnet, "Node #22", "Node #0");
+    network_add_link(growingnet, "Node #22", "Node #33");
+    assert(network_nodes_number(growingnet) == 3);
+    assert(network_links_number(growingnet) == 2);
+    assert(network_in_degree(growingnet, "Node #0") == 1);
+    assert(network_out_degree(growingnet, "Node #0") == 0);
+    assert(network_in_degree(growingnet, "Node #22") == 0);
+    assert(network_out_degree(growingnet, "Node #22") == 2);
+    assert(network_in_degree(growingnet, "Node #33") == 1);
+    
+    network_delete(growingnet);
+    assert(network_nodes_number(growingnet) == 0);
+    assert(network_links_number(growingnet) == 0);
+    assert(network_in_degree(growingnet, "Node #0") == 0);
+    assert(network_out_degree(growingnet, "Node #0") == 0);
+    assert(network_in_degree(growingnet, "Node #22") == 0);
+    assert(network_out_degree(growingnet, "Node #22") == 0);
+    assert(network_in_degree(growingnet, "Node #33") == 0);
+    network_add_node(growingnet, "Node #0");
+    network_add_link(growingnet, "Node #22", "Node #0");
+    network_add_link(growingnet, "Node #22", "Node #33");
+    assert(network_nodes_number(growingnet) == 0);
+    assert(network_links_number(growingnet) == 0);
+    assert(network_in_degree(growingnet, "Node #0") == 0);
+    assert(network_out_degree(growingnet, "Node #0") == 0);
+    assert(network_in_degree(growingnet, "Node #22") == 0);
+    assert(network_out_degree(growingnet, "Node #22") == 0);
+    assert(network_in_degree(growingnet, "Node #33") == 0);
     
     
     printf("\n\n>>>Number of nodes in %lu\n", -1);
