@@ -149,7 +149,7 @@ unsigned long network_new(int growing)
     if (debug())
     {
         cerr << "\tNetwork with id=" << new_id << " created. Currently a total of "
-                << networks().size() << " in memory." << endl;
+                << networks().size() << " networks in memory." << endl;
     }
     
     
