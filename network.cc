@@ -56,7 +56,6 @@ NET_CONTAINER& networks()
 
 
 /*** DECLARATIONS OF HELPER FUNCTIONS *********************************/
-inline bool exists(const NET_CONTAINER& networks, const unsigned long id);
 inline bool is_growing(const NET_CONTAINER::iterator& net);
 inline bool contains_node(const NET_DATA& net_data, const char* label);
 
@@ -77,12 +76,6 @@ static const string CE_FATAL = "Fatal error encountered. Returning neutral value
 
 
 /*** IMPLEMENTATIONS OF HELPER FUNCTIONS ******************************/
-inline bool exists(const NET_CONTAINER& networks, const unsigned long id)
-{
-    return networks.count(id);
-}
-
-
 inline bool is_growing(const NET_CONTAINER::iterator& net)
 {   
     return net->second.second;
