@@ -144,13 +144,14 @@ unsigned long network_new(int growing)
         new_id = networks().rbegin()->first + 1;
     }
     
+    networks().insert(make_pair(new_id, make_pair(NODE_MAP(), growing)));
+
     if (debug())
     {
-        cerr << "\tnetworks.size() == " << networks().size()
-            << ", new_id = " << new_id << endl;
+        cerr << "\tNetwork with id=" << new_id << " created. Currently a total of "
+                << networks().size() << " in memory." << endl;
     }
     
-    networks().insert(make_pair(new_id, make_pair(NODE_MAP(), growing)));
     
     return new_id;
 }
@@ -364,14 +365,13 @@ void network_add_link(unsigned long id, const char* slabel, const char* tlabel)
     
     // Source node
     NODE_MAP::iterator snode = node_map.find(slabel);
-    assert(snode != node_map.end());
     
     // Target node
     NODE_MAP::iterator tnode = node_map.find(tlabel);
-    assert(tnode != node_map.end());
     
-    // Add the actual link (inform both source and target node).
+    // Inform the source node about the link.
     snode->second.second.insert(tlabel);
+    // Inform the target node about the link.
     tnode->second.first.insert(slabel);
     
     if (debug())
@@ -407,7 +407,7 @@ void network_remove_node(unsigned long id, const char* label)
         return;
     }   
 
-    //This check goes first, since its faster than the next one.
+    // This check goes first, since its faster than the next one.
     if (is_growing(net_it->second))
     {
         if (debug()) cerr << '\t' << CE_NETWORK_IS_GROWING
@@ -427,29 +427,24 @@ void network_remove_node(unsigned long id, const char* label)
     
     NODE_EDGES& node_edges = node_it->second;
     
-    // Take care of the links coming into the node
-    for (
-            set<NODE>::iterator source_node_it = node_edges.first.begin();
-            source_node_it != node_edges.first.end();
-            ++source_node_it
-        )
+    // Remove incoming links
+    set<NODE>::iterator source_node_it = node_edges.first.begin();
+    while (source_node_it != node_edges.first.end())
     {
-        // Get the node our link comes from, and remove the info about it from that node
-        node_map.find(*source_node_it)->second.second.erase(label);
+        network_remove_link(id, source_node_it->c_str(), label);        
+        ++source_node_it;
     }
     
-    // Take care of the links going out of the node
-    for (
-            set<NODE>::iterator target_node_it = node_edges.second.begin();
-            target_node_it != node_edges.second.end();
-            ++target_node_it
-        )
+    // Remove outgoing links
+    set<NODE>::iterator target_node_it = node_edges.second.begin();
+    while (target_node_it != node_edges.second.end())
     {
-        // Find the node our link goes to, and remove the info about it from that node
-        node_map.find(*target_node_it)->second.first.erase(label);
+        network_remove_link(id, label, target_node_it->c_str());
+        ++target_node_it;
     }
 
-    node_map.erase(node_map.find(label));
+    // Remove the actual node
+    node_map.erase(node_it);
     
     if (debug())
     {
@@ -525,9 +520,11 @@ void network_remove_link(unsigned long id, const char* slabel, const char* tlabe
     
     NODE_MAP::iterator snode = node_map.find(slabel);
     NODE_MAP::iterator tnode = node_map.find(tlabel);
-    assert(snode != node_map.end() && tnode != node_map.end());
-    
+
+    // Tell the source node about the erasure.
     snode->second.second.erase(tlabel);
+    
+    // Tell the target node about the erasure.
     tnode->second.first.erase(slabel);
     
     if (debug())
@@ -540,7 +537,10 @@ void network_remove_link(unsigned long id, const char* slabel, const char* tlabe
 // Complexity: O(n + m + log N)
 void network_clear(unsigned long id)
 {
-    if (debug()) cerr << "network_clear(" << id << "):" << endl;
+    if (debug())
+    {
+        cerr << "network_clear(" << id << "):" << endl;
+    }
         
     NET_CONTAINER::iterator net_it = networks().find(id);
     if (net_it == networks().end())
@@ -613,7 +613,8 @@ size_t network_out_degree(unsigned long id, const char* label)
     
     if (debug())
     {
-        cerr << "\t" << node_it->second.second.size() << " outgoing edges have been found." << endl;
+        cerr << "\t" << node_it->second.second.size()
+                << " outgoing links have been found." << endl;
     }
     return node_it->second.second.size();
 }
@@ -661,7 +662,7 @@ size_t network_in_degree(unsigned long id, const char* label)
     if (debug())
     {
         cerr << "\t" << node_it->second.first.size()
-            << " outgoing edges have been found." << endl;
+                << " incoming links have been found." << endl;
     }
     return node_it->second.first.size();
 }
