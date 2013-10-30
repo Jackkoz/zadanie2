@@ -104,7 +104,7 @@ inline bool contains_link(const NODE_MAP& net_data, const char* slabel, const ch
  * Parameter growing says, wheter the new netrowk
  * shall be growing (growing != 0) or not (growing == 0).
  * 
- * Complexity: O(1)
+ * Complexity: O(log N)
  * 
  */
 unsigned long network_new(int growing)
