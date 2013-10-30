@@ -1,22 +1,19 @@
-CPP = g++
-OPT_CPPFLAGS = -Wall -ansi -pedantic -DDEBUG_LEVEL=$(debuglevel) -DNDEBUG -O2
-DEBUG_CPPFLAGS = -Wall -Wextra -ansi -pedantic -g -DDEBUG_LEVEL=$(debuglevel)
+CXX = g++
+CXXFLAGS = -Wall -ansi -pedantic
 LDFLAGS = 
 
-ifeq ($(debuglevel),)
-	debuglevel = 1
-endif
+debuglevel = 1
 
 ifeq ($(debuglevel),0)
-	CPPFLAGS = $(OPT_CPPFLAGS)
+	CXXFLAGS += -O2 -DNDEBUG
 else
-	CPPFLAGS = $(DEBUG_CPPFLAGS)
+	CXXFLAGS += -g -Wextra
 endif
 
 all: clean network.o growingnet.o
 
 %.o: %.cc %.h
-	$(CPP) $(CPPFLAGS) -c $(LDFLAGS) $< -o $@
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -DDEBUG_LEVEL=$(debuglevel) $(LDFLAGS) -c $< -o $@
 
 clean:
 	rm -f *.o
