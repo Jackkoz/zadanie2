@@ -247,7 +247,10 @@ size_t network_links_number(unsigned long id)
 void network_add_node(unsigned long id, const char* label)
 {
     if (debug())
-        cerr << "network_add_node(" << id << ", " << label << "):" << endl;    
+    {
+        cerr << "network_add_node(" << id << ", "
+                << (label ? label : "NULL") << "):" << endl;    
+    }
     
     // This check is the fastest, so it goes at the beginning
     if (!label)
@@ -294,7 +297,8 @@ void network_add_link(unsigned long id, const char* slabel, const char* tlabel)
     if (debug())
     {
         cerr << "network_add_link(" << id << ", "
-                << slabel << ", " << tlabel << "):" << endl;
+                << (slabel ? slabel : "NULL") << ", "
+                << (tlabel ? tlabel : "NULL") << "):" << endl;
     }
 
     if (!(slabel && tlabel))
@@ -349,7 +353,10 @@ void network_add_link(unsigned long id, const char* slabel, const char* tlabel)
 void network_remove_node(unsigned long id, const char* label)
 {
     if (debug())
-        cerr << "network_remove_node(" << id << ", " << label << "):" << endl;
+    {
+        cerr << "network_remove_node(" << id << ", "
+                << (label ? label : "NULL") << "):" << endl;
+    }
 
     if (!label)
     {
@@ -423,9 +430,10 @@ void network_remove_node(unsigned long id, const char* label)
 void network_remove_link(unsigned long id, const char* slabel, const char* tlabel)
 {
     if (debug())
-    {
-        cerr << "network_remove_link(" << id << ", " << slabel
-            << ", " << tlabel << "):" << endl;
+    {        
+        cerr << "network_remove_link(" << id << ", "
+                << (slabel ? slabel : "NULL") << ", "
+                << (tlabel ? tlabel : "NULL") << "):" << endl;
     }
 
     if (!(slabel && tlabel))
@@ -528,7 +536,10 @@ void network_clear(unsigned long id)
 size_t network_out_degree(unsigned long id, const char* label)
 {
     if (debug())
-        cerr << "network_out_degree(" << id << ", " << label << "):" << endl;
+    {
+        cerr << "network_out_degree(" << id << ", "
+                << (label ? label : "NULL") << "):" << endl;
+    }
 
     if (!label)
     {
@@ -571,7 +582,10 @@ size_t network_out_degree(unsigned long id, const char* label)
 size_t network_in_degree(unsigned long id, const char* label)
 {
     if (debug())
-        cerr << "network_out_degree(" << id << ", " << label << "):" << endl;
+    {
+        cerr << "network_out_degree(" << id << ", "
+                << (label ? label : "NULL") << "):" << endl;
+    }
 
     if (!label)
     {
