@@ -83,15 +83,18 @@ inline bool is_growing(const NET_CONTAINER::iterator& net)
 
 inline bool contains_node(const NET_DATA& net_data, const char* label)
 {
-    NET_DATA::const_iterator node = net_data.find(label);
-    return node != net_data.end();
+    return net_data.count(label);
 }
 
 inline bool contains_link(const NET_DATA& net_data, const char* slabel, const char* tlabel)
 {
+    // Both nodes should exist.
     assert(contains_node(net_data, slabel) && contains_node(net_data, tlabel));
-    NET_DATA::const_iterator snode = net_data.find(slabel);
-    return snode->second.second.count(tlabel);
+    
+    // Each outgoing link should also be an incoming link at the target node.
+    assert(net_data.find(slabel)->second.second.count(tlabel) == net_data.find(tlabel)->second.first.count(slabel));
+    
+    return net_data.find(slabel)->second.second.count(tlabel);
 }
 /**********************************************************************/
 
