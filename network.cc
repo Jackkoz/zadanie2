@@ -22,12 +22,15 @@
 #include <cassert>
 using namespace std;
 
+
 #ifndef DEBUG_LEVEL
     #define DEBUG_LEVEL 0
 #endif
 static const int debug = DEBUG_LEVEL;
 
-/*** TYPE DECLARATIONS FOR THE NETWORK ********************************/
+
+
+/*** TYPES USED FOR FOR NETWORK CONTAINER *****************************/
 // The type (label) held in a single node.
 typedef string NODE;
 
@@ -46,23 +49,41 @@ typedef map<unsigned long, NET> NET_CONTAINER;
 /**********************************************************************/
 
 
-/*** FUNCTION PROVIDING GLOBAL NETWORK CONTAINER **********************/
-NET_CONTAINER& networks()
-{
-    static NET_CONTAINER networks;
-    return networks;
-}
-/**********************************************************************/
-
 
 /*** DECLARATIONS OF HELPER FUNCTIONS *********************************/
-inline bool is_growing(const NET_CONTAINER::iterator& net);
+/*
+ * This function returns a reference to global network map.
+ * 
+ * (Used to prevent the static init order fiasco.)
+ * 
+ */
+NET_CONTAINER& networks();
+
+
+/*
+ * Returns true if and only if given network is growing.
+ * 
+ */
+inline bool is_growing(const NET& net);
+
+
+/*
+ * Returns true if and only if given network contains given node.
+ * 
+ */
 inline bool contains_node(const NODE_MAP& net_data, const char* label);
 
-//WARNING: This function assumes, that both of the nodes exists, so
-// it HAS to be run AFTER making sure slabel and tlabel exist
+
+/*
+ * Returns true if and only if given network contains given link.
+ * 
+ * WARNING: This function assumes, that both of the nodes exists, so
+ * it HAS to be run AFTER making sure slabel and tlabel exist
+ * 
+ */
 inline bool contains_link(const NODE_MAP& net_data, const char* slabel, const char* tlabel);
 /**********************************************************************/
+
 
 
 /*** DEBUG MESSEGES ***************************************************/
@@ -75,16 +96,26 @@ static const string CE_FATAL = "Fatal error encountered. Returning neutral value
 /**********************************************************************/
 
 
+
 /*** IMPLEMENTATIONS OF HELPER FUNCTIONS ******************************/
-inline bool is_growing(const NET_CONTAINER::iterator& net)
-{   
-    return net->second.second;
+NET_CONTAINER& networks()
+{
+    static NET_CONTAINER networks;
+    return networks;
 }
+
+
+inline bool is_growing(const NET& net)
+{   
+    return net.second;
+}
+
 
 inline bool contains_node(const NODE_MAP& net_data, const char* label)
 {
     return net_data.count(label);
 }
+
 
 inline bool contains_link(const NODE_MAP& net_data, const char* slabel, const char* tlabel)
 {
@@ -98,12 +129,10 @@ inline bool contains_link(const NODE_MAP& net_data, const char* slabel, const ch
 }
 /**********************************************************************/
 
-/*
- * Create new empty network and return its id.
- * 
- * Parameter growing says, wheter the new netrowk
- * shall be growing (growing != 0) or not (growing == 0).
- * 
+
+
+/*** IMPLEMENTATIONS OF INTERFACE FUNCTIONS ***************************/
+/* 
  * Complexity: O(log N)
  * 
  */
@@ -141,9 +170,6 @@ unsigned long network_new(int growing)
 
 
 /*
- * If network "id" exists, remove it, otherwise
- * do nothing.
- * 
  * Complexity: O(n + m + log N)
  * 
  */
@@ -175,9 +201,6 @@ void network_delete(unsigned long id)
 
 
 /*
- * If network "id" exists, return its nodes number, otherwise
- * return 0.
- * 
  * Complexity: O(log N)
  * 
  */
@@ -209,9 +232,6 @@ size_t network_nodes_number(unsigned long id)
 
 
 /*
- * If network "id" exists, return its links number, otherwise
- * return 0.
- * 
  * Complexity: O(n + log N)
  * 
  */
@@ -255,10 +275,6 @@ size_t network_links_number(unsigned long id)
 
 
 /*
- * If network "id" exists and label != NULL, and
- * node "label" not in "id", add node "label" to "id".
- * Otherwise do nothing.
- * 
  * Complexity: O(log N + log n)
  * 
  */
@@ -310,11 +326,6 @@ void network_add_node(unsigned long id, const char* label)
 
 
 /*
- * If network "id" exists, and slabel, tlabel != NULL, and
- * link (slabel -> tlabel) not in "id", add such link to "id";
- * otherwise do nothing.
- * If one of the given nodes not in "id", also add it.
- * 
  * Complexity: O(log N + log n + log m)
  * 
  */
@@ -392,10 +403,6 @@ void network_add_link(unsigned long id, const char* slabel, const char* tlabel)
 
 
 /*
- * If network "id" exists, "label" in "id", and "id" is not growing,
- * remove "label" from "id" (including its in- and outgoing edges).
- * Otherwise do nothing.
- * 
  * Complexity: O(k + log N + log n + log m)
  *      k - number of links starting or ending at the node "label"
  * 
@@ -425,7 +432,7 @@ void network_remove_node(unsigned long id, const char* label)
     }   
 
     //This check goes first, since its faster than the next one.
-    if (is_growing(net))
+    if (is_growing(net->second))
     {
         if (debug) cerr << '\t' << CE_NETWORK_IS_GROWING
                         << ' ' << CE_FATAL << endl;
@@ -471,9 +478,6 @@ void network_remove_node(unsigned long id, const char* label)
 
 
 /*
- * If a non-growing network "id" exists, and contains a link
- * (slabel, tlabel), remove the link. Otherwise do nothing.
- * 
  * Complexity: O(log N + log n + log m)
  * 
  */
@@ -504,7 +508,7 @@ void network_remove_link(unsigned long id, const char* slabel, const char* tlabe
         return;
     }
     
-    if (is_growing(net))
+    if (is_growing(net->second))
     {
         if (debug)
         {
@@ -554,9 +558,6 @@ void network_remove_link(unsigned long id, const char* slabel, const char* tlabe
 
 
 /*
- * If a non-growing network "id" exists, remove all its nodes and links,
- * otherwise do nothing.
- * 
  * Complexity: O(n + m + log N)
  * 
  */
@@ -572,9 +573,9 @@ void network_clear(unsigned long id)
             cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
         }
         return;
-    }        
+    }
     
-    if (is_growing(net))
+    if (is_growing(net->second))
     {
         if (debug)
         {
@@ -592,9 +593,6 @@ void network_clear(unsigned long id)
 
 
 /*
- * If network "id" exists and contains node "label", return the count
- * of links going out from "label". Otherwise return 0.
- * 
  * Complexity: O(log N + log n)
  * 
  */
@@ -637,9 +635,6 @@ size_t network_out_degree(unsigned long id, const char* label)
 
 
 /*
- * If network "id" exists and contains node "label", return the count
- * of links coming into "label". Otherwise return 0.
- * 
  * Complexity: O(log N + log n)
  * 
  */
