@@ -1,6 +1,7 @@
 CXX = g++
 CXXFLAGS = -Wall -ansi -pedantic
-LDFLAGS = 
+CPPFLAGS =
+LDFLAGS =
 
 debuglevel := 0
 
@@ -10,7 +11,9 @@ else
 	CXXFLAGS += -g -Wextra
 endif
 
-all: clean network.o growingnet.o
+.PHONY: all clean
+
+all: network.o growingnet.o
 
 %.o: %.cc %.h
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -DDEBUG_LEVEL=$(debuglevel) $(LDFLAGS) -c $< -o $@
