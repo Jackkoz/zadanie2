@@ -97,7 +97,7 @@ static const string CE_FATAL = "Fatal error encountered. Returning neutral value
 
 
 
-/*** IMPLEMENTATIONS OF HELPER FUNCTIONS ******************************/
+/*** IMPLEMENTATION OF HELPER FUNCTIONS *******************************/
 NET_CONTAINER& networks()
 {
     static NET_CONTAINER networks;
@@ -131,7 +131,7 @@ inline bool contains_link(const NODE_MAP& net_data, const char* slabel, const ch
 
 
 
-/*** IMPLEMENTATIONS OF INTERFACE FUNCTIONS ***************************/
+/*** IMPLEMENTATION OF INTERFACE FUNCTIONS ****************************/
 /* 
  * Complexity: O(log N)
  * 
