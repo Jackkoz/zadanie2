@@ -49,7 +49,7 @@ static const string CE_NODE_NOT_FOUND = "Node not found.";
 static const string CE_LINK_NOT_FOUND = "Link not found.";
 static const string CE_LABEL_IS_NULL = "Label is NULL.";
 static const string CE_NETWORK_IS_GROWING = "Network is growing.";
-static const string CE_FATAL = "Fatal error encountered. Returning neutral value or void.";
+static const string CE_FATAL = "Cannot continue. Returning neutral value or void.";
 /**********************************************************************/
 
 
