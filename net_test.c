@@ -10,6 +10,7 @@ int main()
     unsigned long id = network_new(0);
     network_nodes_number(id);
     network_nodes_number(-1);
+    network_out_degree(id, NULL);
     network_add_node(id, "test1");  
     network_add_node(id, "test2");
     network_new(0);
