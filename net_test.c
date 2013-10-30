@@ -109,6 +109,8 @@ int main()
     assert(network_links_number(gid2) == 0);
     assert(network_nodes_number(gid2) == 0);
     
+    
+    
     network_add_node(id1, "Node #0");
     assert(network_nodes_number(id1) == 1);
     assert(network_links_number(id1) == 0);
@@ -116,24 +118,214 @@ int main()
     network_add_link(id1, "Node #22", "Node #33");
     assert(network_nodes_number(id1) == 3);
     assert(network_links_number(id1) == 2);
+    assert(network_in_degree(id1, "Node #0") == 1);
+    assert(network_out_degree(id1, "Node #0") == 0);
+    assert(network_in_degree(id1, "Node #22") == 0);
+    assert(network_out_degree(id1, "Node #22") == 2);
+    assert(network_in_degree(id1, "Node #33") == 1);
+    
     network_clear(id1);
     assert(network_nodes_number(id1) == 0);
     assert(network_links_number(id1) == 0);
+    assert(network_in_degree(id1, "Node #0") == 0);
+    assert(network_out_degree(id1, "Node #0") == 0);
+    assert(network_in_degree(id1, "Node #22") == 0);
+    assert(network_out_degree(id1, "Node #22") == 0);
+    assert(network_in_degree(id1, "Node #33") == 0);
     
     network_add_node(id1, "Node #0");
     network_add_link(id1, "Node #22", "Node #0");
     network_add_link(id1, "Node #22", "Node #33");
     assert(network_nodes_number(id1) == 3);
     assert(network_links_number(id1) == 2);
+    assert(network_in_degree(id1, "Node #0") == 1);
+    assert(network_out_degree(id1, "Node #0") == 0);
+    assert(network_in_degree(id1, "Node #22") == 0);
+    assert(network_out_degree(id1, "Node #22") == 2);
+    assert(network_in_degree(id1, "Node #33") == 1);
     
     network_delete(id1);
     assert(network_nodes_number(id1) == 0);
     assert(network_links_number(id1) == 0);
+    assert(network_in_degree(id1, "Node #0") == 0);
+    assert(network_out_degree(id1, "Node #0") == 0);
+    assert(network_in_degree(id1, "Node #22") == 0);
+    assert(network_out_degree(id1, "Node #22") == 0);
+    assert(network_in_degree(id1, "Node #33") == 0);
     network_add_node(id1, "Node #0");
     network_add_link(id1, "Node #22", "Node #0");
     network_add_link(id1, "Node #22", "Node #33");
     assert(network_nodes_number(id1) == 0);
     assert(network_links_number(id1) == 0);
+    assert(network_in_degree(id1, "Node #0") == 0);
+    assert(network_out_degree(id1, "Node #0") == 0);
+    assert(network_in_degree(id1, "Node #22") == 0);
+    assert(network_out_degree(id1, "Node #22") == 0);
+    assert(network_in_degree(id1, "Node #33") == 0);
+    
+        
+    network_add_node(gid1, "Node #0");
+    assert(network_nodes_number(gid1) == 1);
+    assert(network_links_number(gid1) == 0);
+    network_add_link(gid1, "Node #22", "Node #0");
+    network_add_link(gid1, "Node #22", "Node #33");
+    assert(network_nodes_number(gid1) == 3);
+    assert(network_links_number(gid1) == 2);
+    assert(network_in_degree(gid1, "Node #0") == 1);
+    assert(network_out_degree(gid1, "Node #0") == 0);
+    assert(network_in_degree(gid1, "Node #22") == 0);
+    assert(network_out_degree(gid1, "Node #22") == 2);
+    assert(network_in_degree(gid1, "Node #33") == 1);
+    network_clear(gid1);
+    assert(network_nodes_number(gid1) == 3);
+    assert(network_links_number(gid1) == 2);
+    assert(network_in_degree(gid1, "Node #0") == 1);
+    assert(network_out_degree(gid1, "Node #0") == 0);
+    assert(network_in_degree(gid1, "Node #22") == 0);
+    assert(network_out_degree(gid1, "Node #22") == 2);
+    assert(network_in_degree(gid1, "Node #33") == 1);
+    
+    network_add_node(gid1, "Node #0");
+    network_add_link(gid1, "Node #22", "Node #0");
+    network_add_link(gid1, "Node #22", "Node #33");
+    assert(network_nodes_number(gid1) == 3);
+    assert(network_links_number(gid1) == 2);
+    assert(network_in_degree(gid1, "Node #0") == 1);
+    assert(network_out_degree(gid1, "Node #0") == 0);
+    assert(network_in_degree(gid1, "Node #22") == 0);
+    assert(network_out_degree(gid1, "Node #22") == 2);
+    assert(network_in_degree(gid1, "Node #33") == 1);
+    
+    network_delete(gid1);
+    assert(network_nodes_number(gid1) == 0);
+    assert(network_links_number(gid1) == 0);
+    assert(network_in_degree(gid1, "Node #0") == 0);
+    assert(network_out_degree(gid1, "Node #0") == 0);
+    assert(network_in_degree(gid1, "Node #22") == 0);
+    assert(network_out_degree(gid1, "Node #22") == 0);
+    assert(network_in_degree(gid1, "Node #33") == 0);
+    network_add_node(gid1, "Node #0");
+    network_add_link(gid1, "Node #22", "Node #0");
+    network_add_link(gid1, "Node #22", "Node #33");
+    assert(network_nodes_number(gid1) == 0);
+    assert(network_links_number(gid1) == 0);
+    assert(network_in_degree(gid1, "Node #0") == 0);
+    assert(network_out_degree(gid1, "Node #0") == 0);
+    assert(network_in_degree(gid1, "Node #22") == 0);
+    assert(network_out_degree(gid1, "Node #22") == 0);
+    assert(network_in_degree(gid1, "Node #33") == 0);
+    
+    
+    
+    
+    gid1 = network_new(1);
+    network_add_node(gid1, "Node #0");
+    assert(network_nodes_number(gid1) == 1);
+    assert(network_links_number(gid1) == 0);
+    network_add_link(gid1, "Node #22", "Node #0");
+    network_add_link(gid1, "Node #22", "Node #33");
+    assert(network_nodes_number(gid1) == 3);
+    assert(network_links_number(gid1) == 2);
+    assert(network_in_degree(gid1, "Node #0") == 1);
+    assert(network_out_degree(gid1, "Node #0") == 0);
+    assert(network_in_degree(gid1, "Node #22") == 0);
+    assert(network_out_degree(gid1, "Node #22") == 2);
+    assert(network_in_degree(gid1, "Node #33") == 1);
+    network_clear(gid1);
+    assert(network_nodes_number(gid1) == 3);
+    assert(network_links_number(gid1) == 2);
+    assert(network_in_degree(gid1, "Node #0") == 1);
+    assert(network_out_degree(gid1, "Node #0") == 0);
+    assert(network_in_degree(gid1, "Node #22") == 0);
+    assert(network_out_degree(gid1, "Node #22") == 2);
+    assert(network_in_degree(gid1, "Node #33") == 1);
+    
+    network_add_node(gid1, "Node #0");
+    network_add_link(gid1, "Node #22", "Node #0");
+    network_add_link(gid1, "Node #22", "Node #33");
+    assert(network_nodes_number(gid1) == 3);
+    assert(network_links_number(gid1) == 2);
+    assert(network_in_degree(gid1, "Node #0") == 1);
+    assert(network_out_degree(gid1, "Node #0") == 0);
+    assert(network_in_degree(gid1, "Node #22") == 0);
+    assert(network_out_degree(gid1, "Node #22") == 2);
+    assert(network_in_degree(gid1, "Node #33") == 1);
+    
+    network_delete(gid1);
+    assert(network_nodes_number(gid1) == 0);
+    assert(network_links_number(gid1) == 0);
+    assert(network_in_degree(gid1, "Node #0") == 0);
+    assert(network_out_degree(gid1, "Node #0") == 0);
+    assert(network_in_degree(gid1, "Node #22") == 0);
+    assert(network_out_degree(gid1, "Node #22") == 0);
+    assert(network_in_degree(gid1, "Node #33") == 0);
+    network_add_node(gid1, "Node #0");
+    network_add_link(gid1, "Node #22", "Node #0");
+    network_add_link(gid1, "Node #22", "Node #33");
+    assert(network_nodes_number(gid1) == 0);
+    assert(network_links_number(gid1) == 0);
+    assert(network_in_degree(gid1, "Node #0") == 0);
+    assert(network_out_degree(gid1, "Node #0") == 0);
+    assert(network_in_degree(gid1, "Node #22") == 0);
+    assert(network_out_degree(gid1, "Node #22") == 0);
+    assert(network_in_degree(gid1, "Node #33") == 0);
+    
+    for (i=0; i<50; ++i)
+    {
+        id1 = network_new(0);
+        
+        network_add_node(id1, "Node #0");
+        assert(network_nodes_number(id1) == 1);
+        assert(network_links_number(id1) == 0);
+        network_add_link(id1, "Node #22", "Node #0");
+        network_add_link(id1, "Node #22", "Node #33");
+        assert(network_nodes_number(id1) == 3);
+        assert(network_links_number(id1) == 2);
+        assert(network_in_degree(id1, "Node #0") == 1);
+        assert(network_out_degree(id1, "Node #0") == 0);
+        assert(network_in_degree(id1, "Node #22") == 0);
+        assert(network_out_degree(id1, "Node #22") == 2);
+        assert(network_in_degree(id1, "Node #33") == 1);
+        
+        network_clear(id1);
+        assert(network_nodes_number(id1) == 0);
+        assert(network_links_number(id1) == 0);
+        assert(network_in_degree(id1, "Node #0") == 0);
+        assert(network_out_degree(id1, "Node #0") == 0);
+        assert(network_in_degree(id1, "Node #22") == 0);
+        assert(network_out_degree(id1, "Node #22") == 0);
+        assert(network_in_degree(id1, "Node #33") == 0);
+        
+        network_add_node(id1, "Node #0");
+        network_add_link(id1, "Node #22", "Node #0");
+        network_add_link(id1, "Node #22", "Node #33");
+        assert(network_nodes_number(id1) == 3);
+        assert(network_links_number(id1) == 2);
+        assert(network_in_degree(id1, "Node #0") == 1);
+        assert(network_out_degree(id1, "Node #0") == 0);
+        assert(network_in_degree(id1, "Node #22") == 0);
+        assert(network_out_degree(id1, "Node #22") == 2);
+        assert(network_in_degree(id1, "Node #33") == 1);
+        
+        network_delete(id1);
+        assert(network_nodes_number(id1) == 0);
+        assert(network_links_number(id1) == 0);
+        assert(network_in_degree(id1, "Node #0") == 0);
+        assert(network_out_degree(id1, "Node #0") == 0);
+        assert(network_in_degree(id1, "Node #22") == 0);
+        assert(network_out_degree(id1, "Node #22") == 0);
+        assert(network_in_degree(id1, "Node #33") == 0);
+        network_add_node(id1, "Node #0");
+        network_add_link(id1, "Node #22", "Node #0");
+        network_add_link(id1, "Node #22", "Node #33");
+        assert(network_nodes_number(id1) == 0);
+        assert(network_links_number(id1) == 0);
+        assert(network_in_degree(id1, "Node #0") == 0);
+        assert(network_out_degree(id1, "Node #0") == 0);
+        assert(network_in_degree(id1, "Node #22") == 0);
+        assert(network_out_degree(id1, "Node #22") == 0);
+        assert(network_in_degree(id1, "Node #33") == 0);
+    }
     
     
     printf("\n\n>>>Number of nodes in %lu\n", -1);
