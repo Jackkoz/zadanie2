@@ -36,10 +36,10 @@ typedef string NODE;
 typedef pair<set<NODE>, set<NODE> > NODE_EDGES;
 
 // Type to hold nodes and its edges.
-typedef map<NODE, NODE_EDGES> NET_DATA;
+typedef map<NODE, NODE_EDGES> NODE_MAP;
 
 // Entire network plus flag saying wheter it shall be growing.
-typedef pair<NET_DATA, bool> NET;
+typedef pair<NODE_MAP, bool> NET;
 
 // Container two hold multiples networks with their flags.
 typedef map<unsigned long, NET> NET_CONTAINER;
@@ -57,11 +57,11 @@ NET_CONTAINER& networks()
 
 /*** DECLARATIONS OF HELPER FUNCTIONS *********************************/
 inline bool is_growing(const NET_CONTAINER::iterator& net);
-inline bool contains_node(const NET_DATA& net_data, const char* label);
+inline bool contains_node(const NODE_MAP& net_data, const char* label);
 
 //WARNING: This function assumes, that both of the nodes exists, so
 // it HAS to be run AFTER making sure slabel and tlabel exist
-inline bool contains_link(const NET_DATA& net_data, const char* slabel, const char* tlabel);
+inline bool contains_link(const NODE_MAP& net_data, const char* slabel, const char* tlabel);
 /**********************************************************************/
 
 
@@ -81,12 +81,12 @@ inline bool is_growing(const NET_CONTAINER::iterator& net)
     return net->second.second;
 }
 
-inline bool contains_node(const NET_DATA& net_data, const char* label)
+inline bool contains_node(const NODE_MAP& net_data, const char* label)
 {
     return net_data.count(label);
 }
 
-inline bool contains_link(const NET_DATA& net_data, const char* slabel, const char* tlabel)
+inline bool contains_link(const NODE_MAP& net_data, const char* slabel, const char* tlabel)
 {
     // Both nodes should exist.
     assert(contains_node(net_data, slabel) && contains_node(net_data, tlabel));
@@ -134,7 +134,7 @@ unsigned long network_new(int growing)
             << ", new_id = " << new_id << endl;
     }
     
-    networks().insert(make_pair(new_id, make_pair(NET_DATA(), growing)));
+    networks().insert(make_pair(new_id, make_pair(NODE_MAP(), growing)));
     
     return new_id;
 }
@@ -236,7 +236,7 @@ size_t network_links_number(unsigned long id)
     
     size_t links_count = 0;
     
-    NET_DATA::const_iterator node = net->second.first.begin();
+    NODE_MAP::const_iterator node = net->second.first.begin();
     
     // Sum number of incoming edges of each node.
     while (node != net->second.first.end())
@@ -373,11 +373,11 @@ void network_add_link(unsigned long id, const char* slabel, const char* tlabel)
     }
     
     // Source node
-    NET_DATA::iterator snode = net->second.first.find(slabel);
+    NODE_MAP::iterator snode = net->second.first.find(slabel);
     assert(snode != net->second.first.end());
     
     // Target node
-    NET_DATA::iterator tnode = net->second.first.find(tlabel);
+    NODE_MAP::iterator tnode = net->second.first.find(tlabel);
     assert(tnode != net->second.first.end());
     
     // Add the actual link (inform both source and target node).
@@ -432,7 +432,7 @@ void network_remove_node(unsigned long id, const char* label)
         return;
     }
     
-    NET_DATA::iterator node = net->second.first.find(label);
+    NODE_MAP::iterator node = net->second.first.find(label);
     if (node == net->second.first.end())
     {
         if (debug) cerr << '\t' << CE_NODE_NOT_FOUND
@@ -539,8 +539,8 @@ void network_remove_link(unsigned long id, const char* slabel, const char* tlabe
         return;
     }
     
-    NET_DATA::iterator snode = net->second.first.find(slabel);
-    NET_DATA::iterator tnode = net->second.first.find(tlabel);
+    NODE_MAP::iterator snode = net->second.first.find(slabel);
+    NODE_MAP::iterator tnode = net->second.first.find(tlabel);
     assert(snode != net->second.first.end() && tnode != net->second.first.end());
     
     snode->second.second.erase(tlabel);
@@ -620,7 +620,7 @@ size_t network_out_degree(unsigned long id, const char* label)
         return 0;
     }
     
-    NET_DATA::iterator node = net->second.first.find(label);
+    NODE_MAP::iterator node = net->second.first.find(label);
     if (node == net->second.first.end())    
     {
         if (debug) cerr << '\t' << CE_NODE_NOT_FOUND
@@ -669,7 +669,7 @@ size_t network_in_degree(unsigned long id, const char* label)
         return 0;
     }
     
-    NET_DATA::iterator node = net->second.first.find(label);
+    NODE_MAP::iterator node = net->second.first.find(label);
     if (node == net->second.first.end())
     {
         if (debug)
