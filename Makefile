@@ -2,7 +2,7 @@ CXX = g++
 CXXFLAGS = -Wall -ansi -pedantic
 LDFLAGS = 
 
-debuglevel = 1
+debuglevel := 0
 
 ifeq ($(debuglevel),0)
 	CXXFLAGS += -O2 -DNDEBUG
