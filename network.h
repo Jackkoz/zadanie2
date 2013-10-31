@@ -14,8 +14,8 @@ extern "C" {
 
 
 // Creates a new empty network and returns its id.
-// An empty network is a network with empty set of nodes.
-// Argument growing indicates whether the network is to be growing (growing != 0)
+// An empty network is a network with empty set of nodes. Argument
+// growing indicates whether the network is to be growing (growing != 0)
 // or not (growing == 0).
 unsigned long network_new(int growing);
 
@@ -44,8 +44,8 @@ void network_add_node(unsigned long id, const char* label);
 // If there exists a network with given id, slabel != NULL and tlabel != NULL,
 // and the network does not contain link (slabel, tlabel) then adds link
 // (slabel, tlabel) to the network, otherwise nothing is done.
-// If the network does not contain either or both of the nodes marking the ends of the link
-// then required node(s) is(are) added to the network as well.
+// If the network does not contain either or both of the nodes marking the ends
+// of the link then required node(s) is(are) added to the network as well.
 void network_add_link(unsigned long id, const char* slabel, const char* tlabel);
 
 
