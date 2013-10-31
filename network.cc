@@ -60,7 +60,7 @@ NET_CONTAINER& networks();
 
 // This function returns the debug level and ensures
 // proper iostream initialization if necessary.
-bool debug();
+int debug();
 
 // Returns true if and only if given network is growing.
 inline bool is_growing(const NET& net);
@@ -76,7 +76,7 @@ NET_CONTAINER& networks()
 }
 
 
-bool debug()
+int debug()
 {
     if (DEBUG_LEVEL)
     {
