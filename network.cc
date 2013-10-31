@@ -31,7 +31,7 @@ typedef string NODE;
 // First set holds incoming links, second set holds outgoing links.
 typedef pair<set<NODE>, set<NODE> > NODE_LINKS;
 
-// Type to hold nodes and its edges.
+// Type to hold nodes and their links.
 typedef map<NODE, NODE_LINKS> NODE_MAP;
 
 // Entire network plus flag saying wheter it shall be growing.
