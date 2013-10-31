@@ -27,7 +27,7 @@ typedef pair<set<NODE>, set<NODE> > NODE_LINKS;
 // Type to hold nodes and their links.
 typedef map<NODE, NODE_LINKS> NODE_MAP;
 
-// Entire network plus flag saying wheter it shall be growing.
+// Entire network plus flag saying whether it shall be growing.
 typedef pair<NODE_MAP, bool> NET;
 
 // Container to hold multiples networks with their flags.
@@ -369,7 +369,7 @@ void network_remove_node(unsigned long id, const char* label)
         ++target_node_it;
     }
 
-    // Remove the actual node
+    // Remove the node
     node_map.erase(node_it);
     
     if (debug())
