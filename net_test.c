@@ -382,8 +382,13 @@ int main()
     assert(network_in_degree(growingnet, "Node #33") == 0);
     
     
-    printf("\n\n>>>Number of nodes in %lu\n", -1);
+    printf("\n\n>>>Number of nodes in %lu\n", -1L);
     assert(network_nodes_number(-1) == 0);
+    
+    assert(network_nodes_number(id3) == 0);
+    assert(network_links_number(id3) == 0);    
+    assert(network_nodes_number(gid2) == 0);
+    assert(network_links_number(gid2) == 0);
     
     #ifndef NDEBUG
         printf("\n\nAll asserts passed.\n");

@@ -1,33 +1,29 @@
-CPP = g++
-OPT_CPPFLAGS = -Wall -ansi -pedantic -DDEBUG_LEVEL=$(debuglevel) -DNDEBUG -O2
-DEBUG_CPPFLAGS = -Wall -Wextra -ansi -pedantic -g -DDEBUG_LEVEL=$(debuglevel)
-LDFLAGS = 
+CC = cc
+CFLAGS = -Wall -std=c99 -pedantic
+CXX = g++
+CXXFLAGS = -Wall -ansi -pedantic
+CPPFLAGS =
+LDFLAGS =
 
-ifeq ($(debuglevel),)
-	debuglevel = 1
-endif
+debuglevel := 1
 
 ifeq ($(debuglevel),0)
-	CPPFLAGS = $(OPT_CPPFLAGS)
+	CXXFLAGS += -O2 -DNDEBUG
 else
-	CPPFLAGS = $(DEBUG_CPPFLAGS)
+	CXXFLAGS += -g -Wextra
+	CFLAGS += -g -Wextra
 endif
 
-all: clean network.o growingnet.o
+.PHONY: all clean
+
+all: network.o growingnet.o
 
 %.o: %.cc %.h
-	$(CPP) $(CPPFLAGS) -c $(LDFLAGS) $< 
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -DDEBUG_LEVEL=$(debuglevel) $(LDFLAGS) -c $< -o $@
 
 clean:
 	rm -f *.o
 
-net_test: clean net_test.c network.o growingnet.o
-	gcc -c net_test.c
-	$(CPP) $(CPPFLAGS) $(LDFLAGS) net_test.o network.o growingnet.o -o $@
-
-network_test2: clean network_test2.c network.o growingnet.o
-	gcc -c network_test2.c
-	$(CPP) $(CPPFLAGS) $(LDFLAGS) network_test2.c network.o growingnet.o -o $@
-network_test1: clean network_test1.c network.o growingnet.o
-	gcc -c network_test1.c
-	$(CPP) $(CPPFLAGS) $(LDFLAGS) network_test1.c network.o growingnet.o -o $@
+%.test: %.c network.o growingnet.o
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $<
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -DDEBUG_LEVEL=$(debuglevel) $(LDFLAGS) $< network.o growingnet.o -o $@
