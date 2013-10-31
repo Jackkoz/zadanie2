@@ -31,13 +31,13 @@ typedef string NODE;
 // First set holds incoming links, second set holds outgoing links.
 typedef pair<set<NODE>, set<NODE> > NODE_LINKS;
 
-// Type to hold nodes and its edges.
+// Type to hold nodes and their links.
 typedef map<NODE, NODE_LINKS> NODE_MAP;
 
 // Entire network plus flag saying wheter it shall be growing.
 typedef pair<NODE_MAP, bool> NET;
 
-// Container two hold multiples networks with their flags.
+// Container to hold multiples networks with their flags.
 typedef map<unsigned long, NET> NET_CONTAINER;
 /**********************************************************************/
 
@@ -58,21 +58,12 @@ static const string CE_FATAL = "Cannot continue. Returning neutral value or void
 // This function returns a reference to global network map.
 NET_CONTAINER& networks();
 
-// This function returns the debug level and ensures iostream initialization
-// if necessary.
+// This function returns the debug level and ensures
+// proper iostream initialization if necessary.
 bool debug();
 
 // Returns true if and only if given network is growing.
 inline bool is_growing(const NET& net);
-
-// Returns true if and only if given network contains given node.
-inline bool contains_node(const NODE_MAP& net_data, const char* label);
-
-// Returns true if and only if given network contains given link.
-//
-// WARNING: This function assumes, that both of the nodes exists, so
-// it HAS to be run AFTER making sure slabel and tlabel exist.
-inline bool contains_link(const NODE_MAP& net_data, const char* slabel, const char* tlabel);
 /**********************************************************************/
 
 
@@ -99,24 +90,6 @@ bool debug()
 inline bool is_growing(const NET& net)
 {   
     return net.second;
-}
-
-
-inline bool contains_node(const NODE_MAP& node_map, const char* label)
-{
-    return node_map.count(label);
-}
-
-
-inline bool contains_link(const NODE_MAP& node_map, const char* slabel, const char* tlabel)
-{
-    // Both nodes should exist.
-    assert(contains_node(node_map, slabel) && contains_node(node_map, tlabel));
-    
-    // Each outgoing link should also be an incoming link at the target node.
-    assert(node_map.find(slabel)->second.second.count(tlabel) == node_map.find(tlabel)->second.first.count(slabel));
-    
-    return node_map.find(slabel)->second.second.count(tlabel);
 }
 /**********************************************************************/
 
@@ -173,7 +146,7 @@ void network_delete(unsigned long id)
         return;
     }
     
-    // erase(id) returns number of keys removed from map
+    // erase(id) returns number of keys removed from map.
     size_t n_deleted = networks().erase(id);    
     
     if (debug())
@@ -229,7 +202,7 @@ size_t network_links_number(unsigned long id)
     
     size_t n_links = 0;
     
-    // Sum up number of incoming edges for each node.
+    // Sum up number of incoming links for each node.
     NODE_MAP::const_iterator node_it = node_map.begin();    
     while (node_it != node_map.end())
     {
@@ -401,19 +374,19 @@ void network_remove_node(unsigned long id, const char* label)
         return;
     }
     
-    NODE_LINKS& node_edges = node_it->second;
+    NODE_LINKS& node_links = node_it->second;
     
     // Remove incoming links
-    set<NODE>::iterator source_node_it = node_edges.first.begin();
-    while (source_node_it != node_edges.first.end())
+    set<NODE>::iterator source_node_it = node_links.first.begin();
+    while (source_node_it != node_links.first.end())
     {
         network_remove_link(id, source_node_it->c_str(), label);        
         ++source_node_it;
     }
     
     // Remove outgoing links
-    set<NODE>::iterator target_node_it = node_edges.second.begin();
-    while (target_node_it != node_edges.second.end())
+    set<NODE>::iterator target_node_it = node_links.second.begin();
+    while (target_node_it != node_links.second.end())
     {
         network_remove_link(id, label, target_node_it->c_str());
         ++target_node_it;
@@ -481,8 +454,9 @@ void network_remove_link(unsigned long id, const char* slabel, const char* tlabe
 
         return;
     }
-        
-    if (!contains_link(node_map, slabel, tlabel))
+
+    // Check if the link actually exists.
+    if (!node_map.find(slabel)->second.second.count(tlabel))
     {
         if (debug())
             cerr << '\t' << CE_LINK_NOT_FOUND << ' ' << CE_FATAL << endl;
