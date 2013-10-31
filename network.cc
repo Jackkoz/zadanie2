@@ -37,7 +37,7 @@ typedef map<NODE, NODE_LINKS> NODE_MAP;
 // Entire network plus flag saying wheter it shall be growing.
 typedef pair<NODE_MAP, bool> NET;
 
-// Container two hold multiples networks with their flags.
+// Container to hold multiples networks with their flags.
 typedef map<unsigned long, NET> NET_CONTAINER;
 /**********************************************************************/
 
