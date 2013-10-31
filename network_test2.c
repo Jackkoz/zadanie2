@@ -107,7 +107,7 @@ int main()
 
     printf("*****\nALL ASSERTIONS PASSED\n*****\n\n");
 
-    int licznik = 0;
+    unsigned long licznik = 0;
 
     for (c = 'a'; c <= 'z'; c++)
     {

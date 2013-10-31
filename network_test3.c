@@ -5,7 +5,7 @@
 
 int main()
 {
-    unsigned long n, x, y;
+    unsigned long n;
 
     n = network_new(0);
     
