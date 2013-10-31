@@ -27,12 +27,12 @@ using namespace std;
 // The type (label) held in a single node.
 typedef string NODE;
 
-// Incoming and outgoing edges of a single node.
-// First set holds incoming edges, second set holds outgoing edges.
-typedef pair<set<NODE>, set<NODE> > NODE_EDGES;
+// Incoming and outgoing links of a single node.
+// First set holds incoming links, second set holds outgoing links.
+typedef pair<set<NODE>, set<NODE> > NODE_LINKS;
 
 // Type to hold nodes and its edges.
-typedef map<NODE, NODE_EDGES> NODE_MAP;
+typedef map<NODE, NODE_LINKS> NODE_MAP;
 
 // Entire network plus flag saying wheter it shall be growing.
 typedef pair<NODE_MAP, bool> NET;
@@ -285,7 +285,7 @@ void network_add_node(unsigned long id, const char* label)
     }
     
     // Insert the node (with no links for now).
-    node_map[label] = NODE_EDGES();
+    node_map[label] = NODE_LINKS();
     
     if (debug())
         cerr << "\tNode with given label has been added to given network." << endl;
@@ -401,7 +401,7 @@ void network_remove_node(unsigned long id, const char* label)
         return;
     }
     
-    NODE_EDGES& node_edges = node_it->second;
+    NODE_LINKS& node_edges = node_it->second;
     
     // Remove incoming links
     set<NODE>::iterator source_node_it = node_edges.first.begin();
