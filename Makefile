@@ -6,7 +6,7 @@ LDFLAGS =
 debuglevel := 0
 
 ifeq ($(debuglevel),0)
-	CXXFLAGS += -O2 -DNDEBUG
+	CXXFLAGS += -O2
 else
 	CXXFLAGS += -g -Wextra
 endif
