@@ -102,18 +102,9 @@ unsigned long network_new(int growing)
     if (debug())
         cerr << "network_new(" << growing << "):" << endl;
     
-    unsigned long new_id;
+    static unsigned long new_id = 0;
     
-    if (networks().size() == 0)
-    {
-        // If there are no networks in memory, the new id shall be 0.
-        new_id = 0;
-    }
-    else
-    {
-        // Otherwise, take the last existing element and add 1 to its id.
-        new_id = networks().rbegin()->first + 1;
-    }
+    ++new_id;
     
     assert(!networks().count(new_id));
     
@@ -150,7 +141,10 @@ void network_delete(unsigned long id)
     size_t n_deleted = networks().erase(id);    
     
     if (debug())
+    {
         cerr << "\tNumber of deleted networks: " << n_deleted << '.' << endl;
+        cerr << "\tNumber of networks left: " << networks().size() << '.' << endl;
+    }
 }
 
 
