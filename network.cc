@@ -168,9 +168,8 @@ void network_delete(unsigned long id)
     if (!networks().count(id))
     {
         if (debug())
-        {
             cerr << '\t' << CE_NETWORK_NOT_FOUND << ' ' << CE_FATAL << endl;
-        }
+
         return;
     }
     
@@ -279,7 +278,7 @@ void network_add_node(unsigned long id, const char* label)
         if (debug())
         {
             cerr << "\tNode with given label already exists in given network."
-                << ' ' << CE_FATAL << endl;
+                    << ' ' << CE_FATAL << endl;
         }
         
         return;
