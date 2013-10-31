@@ -22,7 +22,7 @@ all: network.o growingnet.o network_test1.test network_test2.test network_test3.
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -DDEBUG_LEVEL=$(debuglevel) $(LDFLAGS) -c $< -o $@
 
 clean:
-	rm -f *.o
+	rm -f *.o *.test
 
 %.test: %.c network.o growingnet.o
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $<
