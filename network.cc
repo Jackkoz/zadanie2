@@ -14,7 +14,6 @@
 #include <map>
 #include <set>
 #include <iostream>
-#include <cassert>
 using namespace std;
 
 
@@ -105,8 +104,6 @@ unsigned long network_new(int growing)
     static unsigned long new_id = 0;
     
     ++new_id;
-    
-    assert(!networks().count(new_id));
     
     networks()[new_id] = make_pair(NODE_MAP(), growing);
 
