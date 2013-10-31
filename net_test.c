@@ -385,6 +385,15 @@ int main()
     printf("\n\n>>>Number of nodes in %lu\n", -1L);
     assert(network_nodes_number(-1) == 0);
     
+    network_add_link(id3, NULL, NULL);
+    assert(network_links_number(id3) == 0);
+    network_add_link(id3, "Node", "Node");
+    assert(network_links_number(id3) == 1);
+    assert(network_in_degree(id3, "Node") == 1);
+    assert(network_out_degree(id3, "Node") == 1);
+    assert(network_nodes_number(id3) == 1);
+    network_delete(id3);
+    
     assert(network_nodes_number(id3) == 0);
     assert(network_links_number(id3) == 0);    
     assert(network_nodes_number(gid2) == 0);
