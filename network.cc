@@ -56,27 +56,27 @@ static const string CE_FATAL = "Cannot continue. Returning neutral value or void
 
 /*** DECLARATIONS OF HELPER FUNCTIONS *********************************/
 // This function returns a reference to global network map.
-NET_CONTAINER& networks();
+static NET_CONTAINER& networks();
 
 // This function returns the debug level and ensures
 // proper iostream initialization if necessary.
-int debug();
+static int debug();
 
 // Returns true if and only if given network is growing.
-inline bool is_growing(const NET& net);
+static inline bool is_growing(const NET& net);
 /**********************************************************************/
 
 
 
 /*** IMPLEMENTATION OF HELPER FUNCTIONS *******************************/
-NET_CONTAINER& networks()
+static NET_CONTAINER& networks()
 {
     static NET_CONTAINER networks;
     return networks;
 }
 
 
-int debug()
+static int debug()
 {
     if (DEBUG_LEVEL)
     {
@@ -87,7 +87,7 @@ int debug()
 }
 
 
-inline bool is_growing(const NET& net)
+static inline bool is_growing(const NET& net)
 {   
     return net.second;
 }
