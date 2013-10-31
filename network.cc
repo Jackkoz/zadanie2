@@ -1,12 +1,6 @@
 /*
  * Authors: Hubert Tarasiuk #335965, Jacek Koziński #334678
  *
- *  
- * Letters used to describe complexity:
- * -> N - the number of networks in memory
- * -> n - the number of nodes in given network
- * -> m - the number of links in given network
- * 
  */
 
 #include "network.h"
@@ -95,7 +89,6 @@ static inline bool is_growing(const NET& net)
 
 
 /*** IMPLEMENTATION OF INTERFACE FUNCTIONS ****************************/
-// Complexity: O(log N)
 unsigned long network_new(int growing)
 {
     if (debug())
@@ -120,7 +113,6 @@ unsigned long network_new(int growing)
 }
 
 
-// Complexity: O(n + m + log N)
 void network_delete(unsigned long id)
 {
     if (debug())
@@ -145,7 +137,6 @@ void network_delete(unsigned long id)
 }
 
 
-// Complexity: O(log N)
 size_t network_nodes_number(unsigned long id)
 {
     if (debug())
@@ -174,7 +165,6 @@ size_t network_nodes_number(unsigned long id)
 }
 
 
-// Complexity: O(n + log N)
 size_t network_links_number(unsigned long id)
 {
     if (debug())
@@ -208,7 +198,6 @@ size_t network_links_number(unsigned long id)
 }
 
 
-// Complexity: O(log N + log n)
 void network_add_node(unsigned long id, const char* label)
 {
     if (debug())
@@ -256,7 +245,6 @@ void network_add_node(unsigned long id, const char* label)
 }
 
 
-// Complexity: O(log N + log n + log m)
 void network_add_link(unsigned long id, const char* slabel, const char* tlabel)
 {
     if (debug())
@@ -313,8 +301,6 @@ void network_add_link(unsigned long id, const char* slabel, const char* tlabel)
 }
 
 
-// Complexity: O(k + log N + log n + log m)
-//      k - number of links starting or ending at the node "label"
 void network_remove_node(unsigned long id, const char* label)
 {
     if (debug())
@@ -391,7 +377,6 @@ void network_remove_node(unsigned long id, const char* label)
 }
 
 
-// Complexity: O(log N + log n + log m)
 void network_remove_link(unsigned long id, const char* slabel, const char* tlabel)
 {
     if (debug())
@@ -466,7 +451,6 @@ void network_remove_link(unsigned long id, const char* slabel, const char* tlabe
 }
 
 
-// Complexity: O(n + m + log N)
 void network_clear(unsigned long id)
 {
     if (debug())
@@ -498,7 +482,6 @@ void network_clear(unsigned long id)
 }
 
 
-// Complexity: O(log N + log n)
 size_t network_out_degree(unsigned long id, const char* label)
 {
     if (debug())
@@ -544,7 +527,6 @@ size_t network_out_degree(unsigned long id, const char* label)
 }
 
 
-// Complexity: O(log N + log n)
 size_t network_in_degree(unsigned long id, const char* label)
 {
     if (debug())
