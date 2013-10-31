@@ -16,7 +16,7 @@ endif
 
 .PHONY: all clean
 
-all: network.o growingnet.o network_test1.test network_test2.test network_test3.test network_test4.test net_test.test
+all: network.o growingnet.o network_test1.test network_test2.test network_test3.test network_test4.test net_test.test net_id.test
 
 %.o: %.cc %.h
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -DDEBUG_LEVEL=$(debuglevel) $(LDFLAGS) -c $< -o $@
