@@ -570,4 +570,3 @@ size_t network_in_degree(unsigned long id, const char* label)
 
     return in_degree;
 }
-    
