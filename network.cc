@@ -584,7 +584,7 @@ size_t network_in_degree(unsigned long id, const char* label)
 {
     if (debug())
     {
-        cerr << "network_out_degree(" << id << ", "
+        cerr << "network_in_degree(" << id << ", "
                 << (label ? label : "NULL") << "):" << endl;
     }
 
